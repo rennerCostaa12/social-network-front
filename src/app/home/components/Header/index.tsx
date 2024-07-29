@@ -1,9 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
-import { SearchIcon } from "lucide-react";
+import { LogOut, SearchIcon, User } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,16 +11,31 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../../../../components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+
+import { useHeader } from "./useHeader";
+
+import { useAuthContext } from "@/context/auth";
 
 export const Header = () => {
-  const [isSearching, setIsSearching] = useState<boolean>(false);
-  const refInputSearch = useRef<HTMLInputElement | null>(null);
+  const {
+    handleRedirectMyProfile,
+    handleSearch,
+    isSearching,
+    refInputSearch,
+    setIsSearching,
+    handleLogout,
+    getNameInitials,
+  } = useHeader();
 
-  const { push } = useRouter();
-
-  const handleSearch = (valueInput: string) => {
-    push(`/pesquisa/${valueInput}`);
-  };
+  const { datasUser } = useAuthContext();
 
   useEffect(() => {
     if (isSearching) {
@@ -83,19 +97,52 @@ export const Header = () => {
             className="w-full"
           />
         )}
-        <Link
-          href="/user/1"
-          className="flex items-center gap-2"
-          prefetch={false}
-        >
-          <Avatar>
-            <AvatarImage src="/img-default-profile-man.png" />
-            <AvatarFallback>JD</AvatarFallback>
-          </Avatar>
-          <span className="hidden sm:block text-sm font-medium text-nowrap">
-            John Doe
-          </span>
-        </Link>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex items-center gap-2">
+            <Avatar>
+              <AvatarImage
+                src={
+                  datasUser?.photo_profile
+                    ? datasUser.photo_profile
+                    : "/img-default-profile-man.png"
+                }
+              />
+              {datasUser && (
+                <AvatarFallback>
+                  {getNameInitials(datasUser?.name)}
+                </AvatarFallback>
+              )}
+            </Avatar>
+            <div className="flex flex-col">
+              <span className="hidden sm:block text-lg text-left text-nowrap">
+                {datasUser?.name}
+              </span>
+              <span className="hidden sm:block text-sm text-left -nowrap text-gray-400">
+                @{datasUser?.username}
+              </span>
+            </div>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
+
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={handleRedirectMyProfile}
+            >
+              <User className="mr-2 h-4 w-4" />
+              <span>Meu Pefil</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );

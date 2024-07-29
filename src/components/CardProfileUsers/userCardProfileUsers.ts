@@ -1,12 +1,6 @@
+import { getNameInitials } from "@/utils/getNamesInitials";
+
 export const useCardProfileUsers = () => {
-  const getNameInitials = (nameUser: string) => {
-    const teste = nameUser.split(" ");
-
-    const firstName = teste[0][0];
-    const secondName = teste[1][0];
-
-    return `${firstName}${secondName}`;
-  };
 
   const setImageProfile = (url_img: string | null, gender: string) => {
     if (!url_img) {

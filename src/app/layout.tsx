@@ -1,7 +1,9 @@
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { ReactNode } from "react";
+import { Providers } from "@/providers";
 
 const fontHeading = Inter({
   subsets: ["latin"],
@@ -25,7 +27,8 @@ export default function Layout({ children }: LayoutProps) {
       <body
         className={cn("antialiased", fontHeading.variable, fontBody.variable)}
       >
-        {children}
+        <Providers>{children}</Providers>
+        <Toaster richColors position="top-right" duration={2000} />
       </body>
     </html>
   );

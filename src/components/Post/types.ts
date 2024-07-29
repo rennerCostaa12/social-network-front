@@ -1,1 +1,3 @@
-export interface PostProps {}
+export interface PostProps {
+  data?: PostsUserProps;
+}
