@@ -52,7 +52,6 @@ export const CardProfile = ({
     }
   }, [datasUser]);
   
-  console.log(postsUser);
 
   return (
     <Card className="w-full max-w-[800px]">

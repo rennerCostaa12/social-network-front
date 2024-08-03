@@ -9,8 +9,14 @@ import { useLogin } from "./useLogin";
 import { Input } from "@/components/Input";
 
 export default function Login() {
-  const { handleLogin, loading, Controller, control, handleSubmit } =
-    useLogin();
+  const {
+    handleLogin,
+    loading,
+    Controller,
+    control,
+    handleSubmit,
+    handleRedirectRegisterUser,
+  } = useLogin();
 
   return (
     <main>
@@ -106,13 +112,17 @@ export default function Login() {
                 )}
               />
             </div>
-            <div>
-              <Button
-                type="submit"
-                className="w-full bg-primary"
-                loading={loading}
-              >
+            <div className="flex flex-col gap-4">
+              <Button type="submit" loading={loading}>
                 Login
+              </Button>
+
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleRedirectRegisterUser}
+              >
+                Cadastrar
               </Button>
             </div>
           </form>

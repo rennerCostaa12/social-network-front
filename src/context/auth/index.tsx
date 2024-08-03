@@ -20,13 +20,16 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const cookies = new Cookies();
 
-  const updateHeaders = async (token?: string | undefined) => {
+  const updateHeaders = async (
+    token?: string | undefined,
+    dataUser?: DatasUserProps | undefined
+  ) => {
     if (token) {
       cookies.set("@social_network:token_user", token);
+      cookies.set("@social_network:datas_user", JSON.stringify(dataUser));
       api.defaults.headers.common.Authorization = `Bearer ${token}`;
     } else {
       const tokenStorage = cookies.get("@social_network:token_user");
-
       if (tokenStorage) {
         api.defaults.headers.common.Authorization = `Bearer ${tokenStorage}`;
       }
@@ -49,8 +52,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         JSON.stringify(responseSignIn.data.user)
       );
       setDatasUser(responseSignIn.data.user);
-
-      updateHeaders(responseSignIn.data.access_token);
+      updateHeaders(responseSignIn.data.access_token, responseSignIn.data.user);
     }
 
     return {

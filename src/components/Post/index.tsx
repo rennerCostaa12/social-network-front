@@ -131,7 +131,7 @@ export const Post = ({ data }: PostProps) => {
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <ClockIcon className="w-4 h-4" />
-          <span>{new Date(data?.created_at).toLocaleString()}</span>
+          <span>{new Date(data?.created_at as string).toLocaleString()}</span>
         </div>
       </CardFooter>
     </Card>

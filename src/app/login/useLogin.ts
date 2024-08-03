@@ -38,6 +38,10 @@ export const useLogin = () => {
     }
   };
 
+  const handleRedirectRegisterUser = () => {
+    router.push("/cadastro");
+  };
+
   return {
     loading,
     handleLogin,
@@ -47,5 +51,6 @@ export const useLogin = () => {
     reset,
     handleSubmit,
     router,
+    handleRedirectRegisterUser,
   };
 };

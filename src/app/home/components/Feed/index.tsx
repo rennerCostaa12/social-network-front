@@ -1,10 +1,22 @@
+"use client";
+
 import { PlusIcon } from "lucide-react";
 import { Button } from "../../../../components/ui/button";
 
 import { ButtonAddPost } from "../ButtonAddPost";
 import { Post } from "@/components/Post";
+import { useFeed } from "./useFeed";
+import { useEffect } from "react";
 
 export const Feed = () => {
+  const { verifyAllEmoticonsDriverRegistered, datasUser } = useFeed();
+
+  // useEffect(() => {
+  //   if (datasUser) {
+  //     verifyAllEmoticonsDriverRegistered();
+  //   }
+  // }, [datasUser]);
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="max-w-[1000px] space-y-4">
@@ -19,8 +31,8 @@ export const Feed = () => {
             }
           />
         </div>
-        <div className="flex flex-col justify-center grid gap-4">
-          <Post width={900} heigth={1200} />
+        <div className="flex flex-col justify-center gap-4">
+          <Post />
         </div>
       </div>
     </div>
