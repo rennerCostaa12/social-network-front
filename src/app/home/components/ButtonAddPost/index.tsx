@@ -1,6 +1,6 @@
 "use client";
 
-import { Circle, Mic, PlusIcon } from "lucide-react";
+import { Circle, Mic } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ModalDialog } from "@/components/ModalDialog";
@@ -10,18 +10,29 @@ import { Input } from "@/components/ui/input";
 import { useButtonAddPost } from "./useButtonAddPost";
 
 import { ButtonAddPostProps } from "./types";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuthContext } from "@/context/auth";
 
 export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
   const {
     handleChooseFile,
     urlImg,
     handlePlayAndStopRecording,
-    isRecordingAudio,
+    recording,
+    audioUrl,
+    loading,
+    handleSavePost,
+    isOpenModal,
+    setIsOpenModal,
   } = useButtonAddPost();
+
+  const { datasUser } = useAuthContext();
 
   return (
     <div>
       <ModalDialog
+        open={isOpenModal}
+        setOpen={setIsOpenModal}
         title="Adicionar Post"
         elementStart={buttonElement}
         elementContent={
@@ -29,11 +40,11 @@ export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
             <div className="my-4">
               <Button
                 title="Inserir Comentário"
-                variant={isRecordingAudio ? "destructive" : "default"}
+                variant={recording ? "destructive" : "default"}
                 onClick={handlePlayAndStopRecording}
                 className="w-full"
               >
-                {isRecordingAudio ? (
+                {recording ? (
                   <Circle className="w-5 h-5 mr-2" />
                 ) : (
                   <Mic className="w-5 h-5 mr-2" />
@@ -41,30 +52,32 @@ export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
                 Inserir Comentário
               </Button>
 
-              {/* {isExistsAudio && (
+              {audioUrl && audioUrl?.length > 0 && datasUser && (
                 <div className="mt-4 flex items-center gap-4">
                   <div className="flex flex-col items-center">
                     <Avatar>
                       <AvatarImage
-                        src="https://github.com/shadcn.png"
+                        src={datasUser?.photo_profile}
                         alt="profile-RC"
                       />
                       <AvatarFallback>RC</AvatarFallback>
                     </Avatar>
 
                     <div>
-                      <h3 className="text-sm font-bold">John Doe</h3>
-                      <p className="text-sm text-muted-foreground">@johndoe</p>
+                      <h3 className="text-sm font-bold">{datasUser?.name}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        @{datasUser?.username}
+                      </p>
                     </div>
                   </div>
                   <audio
                     className="w-full"
                     controls
-                    src={"/audio-default.mp3"}
+                    src={audioUrl}
                     typeof="audio/mpeg"
                   />
                 </div>
-              )} */}
+              )}
             </div>
 
             <div className="grid gap-1">
@@ -80,15 +93,20 @@ export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
               <Image
                 src={urlImg ? urlImg : "/img-post-default.svg"}
                 alt="Uploaded Image"
-                width={800}
-                height={600}
-                className="w-full object-cover rounded-lg border"
+                width={500}
+                height={500}
+                className="w-[500px] h-[500px] rounded-lg border"
               />
             </div>
           </div>
         }
         elementFooter={
-          <Button title="Adicionar" variant="default">
+          <Button
+            title="Adicionar"
+            variant="default"
+            loading={loading}
+            onClick={handleSavePost}
+          >
             Adicionar
           </Button>
         }

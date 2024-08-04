@@ -1,17 +1,35 @@
+import { v4 as uuidv4 } from "uuid";
+import { toast } from "sonner";
 import { ChangeEvent, useState } from "react";
 import { ResizeImage } from "@/utils/resizeImage";
+import { useRecorderMic } from "@/hooks/useRecorderMic";
+import { useAuthContext } from "@/context/auth";
+
+import { TransformBase64ToFile } from "@/utils/transformBase64ToFile";
+
+import { PostsService } from "./services";
 
 export const useButtonAddPost = () => {
   const [urlImg, setUrlImg] = useState<string | null>(null);
-  const [isRecordingAudio, setIsRecordingAudio] = useState<boolean>(false);
-  const [isExistsAudio, setIsExistsAudio] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+
+  const {
+    audioUrl,
+    recording,
+    startRecording,
+    stopRecording,
+    audioFile,
+    resetAll,
+  } = useRecorderMic();
+
+  const { datasUser } = useAuthContext();
 
   const handlePlayAndStopRecording = () => {
-    setIsRecordingAudio(!isRecordingAudio);
-    if(isExistsAudio){
-      setIsExistsAudio(false);
-    }else{
-      setIsExistsAudio(true);
+    if (!recording) {
+      startRecording();
+    } else {
+      stopRecording();
     }
   };
 
@@ -32,11 +50,57 @@ export const useButtonAddPost = () => {
     }
   };
 
+  const handleCloseModalAndReset = () => {
+    resetAll();
+    setUrlImg(null);
+    setIsOpenModal(false);
+  };
+
+  const handleSavePost = async () => {
+    if (!urlImg) {
+      toast.warning("Alerta", {
+        description: "Você precisa escolher uma foto para realizar um post!",
+      });
+
+      return;
+    }
+
+    const urlImgConvertedFile = TransformBase64ToFile(
+      urlImg as string,
+      uuidv4()
+    );
+
+    setLoading(true);
+    const responsePost = await PostsService.addPost(
+      datasUser?.id as string,
+      audioFile as File,
+      urlImgConvertedFile,
+      756
+    );
+    setLoading(false);
+
+    if (responsePost?.status) {
+      toast.success("Sucesso", {
+        description: responsePost?.message,
+      });
+
+      handleCloseModalAndReset();
+    } else {
+      toast.error("Error", {
+        description: responsePost?.message,
+      });
+    }
+  };
+
   return {
     handleChooseFile,
     urlImg,
     handlePlayAndStopRecording,
-    isRecordingAudio,
-    isExistsAudio
+    recording,
+    audioUrl,
+    loading,
+    handleSavePost,
+    isOpenModal,
+    setIsOpenModal,
   };
 };

@@ -41,6 +41,7 @@ export const CardProfile = ({
     gender,
     setGender,
     loading,
+    handleChooseFileImg,
   } = useCardProfile();
 
   useEffect(() => {
@@ -51,7 +52,6 @@ export const CardProfile = ({
       setGender(datasUser.gender);
     }
   }, [datasUser]);
-  
 
   return (
     <Card className="w-full max-w-[800px]">
@@ -148,6 +148,16 @@ export const CardProfile = ({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+              </div>
+
+              <div className="my-2">
+                <Label htmlFor="image">Selecione do seu dispositivo</Label>
+                <Input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleChooseFileImg}
+                />
               </div>
             </div>
           }

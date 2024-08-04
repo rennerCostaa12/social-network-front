@@ -7,6 +7,7 @@ export interface DatasUserProps {
   gender: string;
   description: string | null;
   photo_profile: string;
+  emoticons_drivers: EmoticonsDriversProps[];
 }
 
 export interface ContextAuthProps {

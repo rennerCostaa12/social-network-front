@@ -1,7 +1,7 @@
 export const TransformBase64ToFile = (
   base64String: string,
   filename: string
-) => {
+): File => {
   const [mimePart, base64Data] = base64String.split(",");
 
   // @ts-ignore

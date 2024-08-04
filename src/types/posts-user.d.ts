@@ -3,6 +3,7 @@ declare type PostsUserProps = {
   picture: string;
   city_id: number;
   tags: string;
+  comment: string;
   name_user: string;
   username: string;
   photo_profile: string;

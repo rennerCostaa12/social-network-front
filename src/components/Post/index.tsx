@@ -32,7 +32,7 @@ export const Post = ({ data }: PostProps) => {
           <audio
             className="w-full"
             controls
-            src={"/audio-default.mp3"}
+            src={data?.comment}
             typeof="audio/mpeg"
           />
         </div>
@@ -64,7 +64,7 @@ export const Post = ({ data }: PostProps) => {
           className="w-[500px] h-[600px] w-min-[500px] h-min-[600px] max-sm:w-[300px] max-sm:h-[400px] rounded-lg object-cover"
         />
 
-        {data && data.tags.length > 0 && (
+        {data && data.tags?.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1 max-h-[px] overflow-auto">
             <small className="bg-black text-white p-1 rounded-lg">
               #futebol

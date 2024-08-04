@@ -51,6 +51,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         "@social_network:datas_user",
         JSON.stringify(responseSignIn.data.user)
       );
+      
       setDatasUser(responseSignIn.data.user);
       updateHeaders(responseSignIn.data.access_token, responseSignIn.data.user);
     }

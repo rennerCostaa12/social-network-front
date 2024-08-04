@@ -30,6 +30,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.52.1",
     "react-image-file-resizer": "^0.4.8",
+    "react-microphone-recorder": "^1.0.0",
     "react-webcam": "^7.2.0",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.4.0",

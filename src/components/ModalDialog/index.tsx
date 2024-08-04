@@ -16,9 +16,11 @@ export const ModalDialog = ({
   elementStart,
   title,
   description,
+  open,
+  setOpen,
 }: ModalDialogProps) => {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{elementStart}</DialogTrigger>
       <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>

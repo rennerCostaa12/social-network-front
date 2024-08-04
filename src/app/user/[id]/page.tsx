@@ -56,7 +56,7 @@ export default async function UserDetails({
           following={informationsUser.following}
         />
       </div>
-      
+
       <div className="mx-10">
         {postsUsers.posts.length > 0 && (
           <>
@@ -74,15 +74,16 @@ export default async function UserDetails({
             </div>
           </>
         )}
-
-        <div className="flex flex-col gap-4 my-10 justify-center items-center">
-          <Camera className="w-14 h-14" />
-          <h1 className="text-2xl font-bold">Compartilhe Fotos</h1>
-          <p className="font-medium">
-            Quando você compartilha suas fotos elas aparecerão aqui no seu
-            perfil
-          </p>
-        </div>
+        {postsUsers.posts.length === 0 && (
+          <div className="flex flex-col gap-4 my-10 justify-center items-center">
+            <Camera className="w-14 h-14" />
+            <h1 className="text-2xl font-bold">Compartilhe Fotos</h1>
+            <p className="font-medium">
+              Quando você compartilha suas fotos elas aparecerão aqui no seu
+              perfil
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
