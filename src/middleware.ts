@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import { DatasUserProps } from "./context/auth/types";
 
-import { ServicesGeneral } from "./services";
+import { ServicesGeneral } from "./services/index";
 
 const routesPublic = ["login", "cadastro"];
 

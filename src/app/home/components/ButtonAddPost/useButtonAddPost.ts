@@ -7,7 +7,7 @@ import { useAuthContext } from "@/context/auth";
 
 import { TransformBase64ToFile } from "@/utils/transformBase64ToFile";
 
-import { ServicesGeneral } from "@/services";
+import { ServicesGeneral } from "@/services/index";
 
 export const useButtonAddPost = () => {
   const [fileSelected, setFileSelected] = useState<File | null>(null);

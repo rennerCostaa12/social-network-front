@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { useRecorderMic } from "@/hooks/useRecorderMic";
-import { ServicesGeneral } from "@/services";
+import { ServicesGeneral } from "@/services/index";
 
 import { useAuthContext } from "@/context/auth";
 

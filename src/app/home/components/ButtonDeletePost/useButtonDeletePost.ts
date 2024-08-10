@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ServicesGeneral } from "@/services";
+import { ServicesGeneral } from "@/services/index";
 
 export const useButtonDeletePost = () => {
   const [loading, setLoading] = useState<boolean>(false);
