@@ -69,7 +69,7 @@ export const CardProfile = ({
               }
             />
             {datasUser && (
-              <AvatarFallback>{getNameInitials(datasUser.name)}</AvatarFallback>
+              <AvatarFallback>{getNameInitials(datasUser?.name)}</AvatarFallback>
             )}
           </Avatar>
           <div>

@@ -10,8 +10,10 @@ import {
 
 import { useButtonDeletePost } from "./useButtonDeletePost";
 
-export const ButtonDeletePost = () => {
-  const { handleConfirm } = useButtonDeletePost();
+import { ButtonDeletePostProps } from "./types";
+
+export const ButtonDeletePost = ({ idPost }: ButtonDeletePostProps) => {
+  const { handleConfirm, loading } = useButtonDeletePost();
 
   return (
     <AlertDialog
@@ -28,9 +30,11 @@ export const ButtonDeletePost = () => {
       }
       title="Alerta"
       description="Deseja realemente deletar este post?"
-      buttonCancel={<AlertDialogCancel>Cancelar</AlertDialogCancel>}
+      buttonCancel={<AlertDialogCancel disabled={loading}>Cancelar</AlertDialogCancel>}
       buttonAccept={
-        <AlertDialogAction onClick={handleConfirm}>Confirmar</AlertDialogAction>
+        <AlertDialogAction onClick={() => handleConfirm(idPost)} disabled={loading}>
+          Confirmar
+        </AlertDialogAction>
       }
     />
   );

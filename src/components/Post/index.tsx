@@ -1,5 +1,6 @@
+"use client";
+
 import { ClockIcon, EllipsisVertical, FilePenIcon, Star } from "lucide-react";
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
@@ -12,9 +13,20 @@ import { ButtonDeletePost } from "@/app/home/components/ButtonDeletePost";
 import { ButtonReactions } from "@/app/home/components/ButtonReactions";
 import { ButtonComments } from "@/app/home/components/ButtonComments";
 
+import { getNameInitials } from "@/utils/getNamesInitials";
+
+import { usePost } from "./usePost";
+
 import { PostProps } from "./types";
 
 export const Post = ({ data }: PostProps) => {
+  const { datasUser, videoExtensions } = usePost();
+
+  const extensionPicture = data && data?.picture.split(".").pop();
+
+  const isVideo =
+    data && videoExtensions.includes(`.${extensionPicture as string}`);
+
   return (
     <Card className="max-w-[900px] relative self-center">
       <CardHeader className="flex items-center gap-4">
@@ -23,7 +35,9 @@ export const Post = ({ data }: PostProps) => {
             <AvatarImage
               src={data ? data.photo_profile : "/img-default-profile-man.png"}
             />
-            <AvatarFallback>JD</AvatarFallback>
+            <AvatarFallback>
+              {getNameInitials(data?.name_user as string)}
+            </AvatarFallback>
           </Avatar>
           <div>
             <h3 className="text-sm font-bold">{data?.name_user}</h3>
@@ -36,33 +50,44 @@ export const Post = ({ data }: PostProps) => {
             typeof="audio/mpeg"
           />
         </div>
-        <div className="absolute right-2" title="Opções">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <EllipsisVertical className="w-5 h-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <Button
-                title="Editar"
-                className="w-full cursor-pointer"
-                variant="ghost"
-              >
-                <FilePenIcon className="w-4 h-4 mr-2" />
-                Editar
-              </Button>
-              <ButtonDeletePost />
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        {datasUser?.id === data?.id_user && (
+          <div className="absolute right-2" title="Opções">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <EllipsisVertical className="w-5 h-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <Button
+                  title="Editar"
+                  className="w-full cursor-pointer"
+                  variant="ghost"
+                >
+                  <FilePenIcon className="w-4 h-4 mr-2" />
+                  Editar
+                </Button>
+                <ButtonDeletePost idPost={data?.id as string} />
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
       </CardHeader>
       <CardContent>
-        <img
-          src={data ? data.picture : "/img-post-default.svg"}
-          alt="Design"
-          className="w-[500px] h-[600px] w-min-[500px] h-min-[600px] max-sm:w-[300px] max-sm:h-[400px] rounded-lg object-cover"
-        />
+        {isVideo ? (
+          <video className="rounded-lg w-[500px] h-[600px]" controls>
+            <source
+              src={data.picture as string}
+              type={`video/${extensionPicture}`}
+            />
+          </video>
+        ) : (
+          <img
+            src={data ? data.picture : "/img-post-default.svg"}
+            alt="Design"
+            className="w-[500px] h-[600px] w-min-[500px] h-min-[600px] max-sm:w-[300px] max-sm:h-[400px] rounded-lg object-cover"
+          />
+        )}
 
         {data && data.tags?.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1 max-h-[px] overflow-auto">
@@ -119,7 +144,7 @@ export const Post = ({ data }: PostProps) => {
           </div>
 
           <div className="flex flex-col items-center">
-            <ButtonComments />
+            <ButtonComments idPost={data?.id as string} />
             <span>{data?.comments}</span>
           </div>
 

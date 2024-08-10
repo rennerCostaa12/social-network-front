@@ -13,7 +13,7 @@ import { useAuthContext } from "@/context/auth";
 
 export const ButtonReactions = () => {
   const { datasUser } = useAuthContext();
-  
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -26,7 +26,12 @@ export const ButtonReactions = () => {
           <div className="min-w-min flex items-center gap-4 my-2">
             {datasUser?.emoticons_drivers?.map((value) => {
               return (
-                <Button variant="ghost" size="icon">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  title={value?.category?.name}
+                  key={value.id}
+                >
                   <Image
                     className="cursor-pointer rounded-full"
                     src={value.image}

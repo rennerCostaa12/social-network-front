@@ -16,7 +16,7 @@ import { useAuthContext } from "@/context/auth";
 export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
   const {
     handleChooseFile,
-    urlImg,
+    urlFile,
     handlePlayAndStopRecording,
     recording,
     audioUrl,
@@ -24,6 +24,8 @@ export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
     handleSavePost,
     isOpenModal,
     setIsOpenModal,
+    extensionVideo,
+    isVideo,
   } = useButtonAddPost();
 
   const { datasUser } = useAuthContext();
@@ -85,18 +87,27 @@ export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
               <Input
                 id="image"
                 type="file"
-                accept="image/*"
+                accept="image/*, video/mp4"
                 onChange={handleChooseFile}
               />
             </div>
-            <div className="grid gap-2">
-              <Image
-                src={urlImg ? urlImg : "/img-post-default.svg"}
-                alt="Uploaded Image"
-                width={500}
-                height={500}
-                className="w-[500px] h-[500px] rounded-lg border"
-              />
+            <div className="flex items-center justify-center">
+              {isVideo ? (
+                <video width={250} height={250} controls key={urlFile}>
+                  <source
+                    src={`${urlFile}` as string}
+                    type={`video/${extensionVideo}`}
+                  />
+                </video>
+              ) : (
+                <Image
+                  src={urlFile ? urlFile : "/img-post-default.svg"}
+                  alt="Uploaded Image"
+                  width={500}
+                  height={500}
+                  className="w-[500px] h-[500px] rounded-lg border"
+                />
+              )}
             </div>
           </div>
         }

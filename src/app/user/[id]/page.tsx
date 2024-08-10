@@ -1,3 +1,5 @@
+export const revalidate = 0;
+
 import { Camera } from "lucide-react";
 import { cookies } from "next/headers";
 import { CardProfile } from "@/components/CardProfile";
@@ -52,19 +54,19 @@ export default async function UserDetails({
       <div className="flex justify-center">
         <CardProfile
           postsUser={postsUsers}
-          followers={informationsUser.followers}
-          following={informationsUser.following}
+          followers={informationsUser?.followers}
+          following={informationsUser?.following}
         />
       </div>
 
       <div className="mx-10">
-        {postsUsers.posts.length > 0 && (
+        {postsUsers?.posts.length > 0 && (
           <>
             <h1 className="text-2xl my-8 font-bold text-center">
               Minhas Publicações
             </h1>
             <div className="my-5 flex flex-wrap justify-center gap-6">
-              {postsUsers.posts.map((response) => {
+              {postsUsers?.posts.map((response) => {
                 return (
                   <div className="max-w-[500px]" key={response.id}>
                     <Post data={response} />
@@ -74,7 +76,7 @@ export default async function UserDetails({
             </div>
           </>
         )}
-        {postsUsers.posts.length === 0 && (
+        {postsUsers?.posts.length === 0 && (
           <div className="flex flex-col gap-4 my-10 justify-center items-center">
             <Camera className="w-14 h-14" />
             <h1 className="text-2xl font-bold">Compartilhe Fotos</h1>

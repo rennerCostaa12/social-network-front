@@ -1,8 +1,15 @@
 export const getNameInitials = (nameUser: string) => {
-  const nameUsersArray = nameUser.split(" ");
+  if (nameUser && nameUser?.length > 0) {
+    const nameUsersArray = nameUser.split(" ");
 
-  const firstName = nameUsersArray[0][0];
-  const secondName = nameUsersArray[1][0];
+    const firstName = nameUsersArray[0][0];
 
-  return `${firstName}${secondName}`;
+    if (nameUsersArray.length > 1) {
+      const secondName = nameUsersArray[1][0];
+
+      return `${firstName}${secondName}`;
+    }
+
+    return `${firstName}`;
+  }
 };

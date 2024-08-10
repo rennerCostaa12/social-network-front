@@ -4,6 +4,7 @@ declare type PostsUserProps = {
   city_id: number;
   tags: string;
   comment: string;
+  id_user: string;
   name_user: string;
   username: string;
   photo_profile: string;

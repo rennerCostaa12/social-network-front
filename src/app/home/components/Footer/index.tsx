@@ -7,8 +7,11 @@ import { ButtonAddPost } from "../ButtonAddPost";
 
 import { useFooter } from "./userFooter";
 
+import { useAuthContext } from "@/context/auth";
+
 export const Footer = () => {
   const { handleRedirect } = useFooter();
+  const { datasUser } = useAuthContext();
 
   return (
     <footer className="bg-muted border-t px-4 md:px-6 py-4 flex items-center justify-between max-md:w-full max-md:fixed max-md:bottom-0 md:z-20">
@@ -34,7 +37,7 @@ export const Footer = () => {
           variant="link"
           size="icon"
           title="Configurações de usuários"
-          onClick={() => handleRedirect(`/user/1`)}
+          onClick={() => handleRedirect(`/user/${datasUser?.id}`)}
         >
           <UserIcon className="w-5 h-5" />
         </Button>

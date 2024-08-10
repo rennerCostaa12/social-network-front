@@ -7,13 +7,13 @@ import { useAuthContext } from "@/context/auth";
 
 import { TransformBase64ToFile } from "@/utils/transformBase64ToFile";
 
-import { PostsService } from "./services";
+import { ServicesGeneral } from "@/services";
 
 export const useButtonAddPost = () => {
-  const [urlImg, setUrlImg] = useState<string | null>(null);
+  const [fileSelected, setFileSelected] = useState<File | null>(null);
+  const [urlFile, setUrlFile] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-
   const {
     audioUrl,
     recording,
@@ -34,47 +34,56 @@ export const useButtonAddPost = () => {
   };
 
   const handleChooseFile = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files;
+    setUrlFile(null);
+    const file: FileList | null = event.target.files;
 
     if (file) {
-      const image = await ResizeImage(
-        file[0],
-        800,
-        600,
-        "PNG",
-        100,
-        0,
-        "base64"
-      );
-      setUrlImg(image as string);
+      if (!file[0].type.includes("video")) {
+        const image = await ResizeImage(
+          file[0],
+          800,
+          600,
+          "PNG",
+          100,
+          0,
+          "base64"
+        );
+
+        const urlImgConvertedFile = TransformBase64ToFile(
+          image as string,
+          uuidv4()
+        );
+
+        setUrlFile(image as string);
+        setFileSelected(urlImgConvertedFile);
+      } else {
+        const url = URL.createObjectURL(file[0]);
+        setUrlFile(url);
+        setFileSelected(file[0]);
+      }
     }
   };
 
   const handleCloseModalAndReset = () => {
     resetAll();
-    setUrlImg(null);
+    setFileSelected(null);
     setIsOpenModal(false);
   };
 
   const handleSavePost = async () => {
-    if (!urlImg) {
+    if (!fileSelected) {
       toast.warning("Alerta", {
-        description: "Você precisa escolher uma foto para realizar um post!",
+        description: "Você precisa escolher um arquivo para realizar um post!",
       });
 
       return;
     }
 
-    const urlImgConvertedFile = TransformBase64ToFile(
-      urlImg as string,
-      uuidv4()
-    );
-
     setLoading(true);
-    const responsePost = await PostsService.addPost(
+    const responsePost = await ServicesGeneral.addPost(
       datasUser?.id as string,
       audioFile as File,
-      urlImgConvertedFile,
+      fileSelected,
       756
     );
     setLoading(false);
@@ -92,9 +101,11 @@ export const useButtonAddPost = () => {
     }
   };
 
+  const isVideo = fileSelected?.type.includes("video");
+  const extensionVideo = isVideo ? fileSelected?.name.split(".").pop() : null;
+
   return {
     handleChooseFile,
-    urlImg,
     handlePlayAndStopRecording,
     recording,
     audioUrl,
@@ -102,5 +113,9 @@ export const useButtonAddPost = () => {
     handleSavePost,
     isOpenModal,
     setIsOpenModal,
+    urlFile,
+    fileSelected,
+    extensionVideo,
+    isVideo
   };
 };

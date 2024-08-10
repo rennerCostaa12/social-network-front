@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Circle, MessageCircleIcon, Mic } from "lucide-react";
+import { Check, Circle, MessageCircleIcon, Mic, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import { ModalDialog } from "@/components/ModalDialog";
@@ -9,32 +8,83 @@ import { ListComments } from "../ListComments";
 
 import { useButtonComments } from "./useButtonComments";
 
-export const ButtonComments = () => {
-  const { handlePlayAndStopRecording, isRecordingAudio } = useButtonComments();
-  
+import { ButtonCommentsProps } from "./types";
+
+export const ButtonComments = ({ idPost }: ButtonCommentsProps) => {
+  const {
+    handlePlayAndStopRecording,
+    recording,
+    audioUrl,
+    resetAll,
+    handleAddCommentPost,
+    loading,
+    visibleModalComments,
+    setVisibleModalComments,
+    listComments,
+  } = useButtonComments(idPost);
+
   return (
     <div>
       <ModalDialog
+        open={visibleModalComments}
+        setOpen={setVisibleModalComments}
         title="Comentários"
         elementStart={
           <Button variant="ghost" size="icon" title="Comentar">
             <MessageCircleIcon className="w-5 h-5" />
           </Button>
         }
-        elementContent={<ListComments />}
+        elementContent={<ListComments data={listComments} setVisibleModalComments={setVisibleModalComments} />}
         elementFooter={
-          <Button
-            title="Comentar"
-            variant={isRecordingAudio ? "destructive" : "default"}
-            onClick={handlePlayAndStopRecording}
-          >
-            {isRecordingAudio ? (
-              <Circle className="w-5 h-5 mr-2" />
-            ) : (
-              <Mic className="w-5 h-5 mr-2" />
+          <div className="w-full flex items-center gap-4 max-sm:flex-col">
+            {audioUrl && audioUrl.length > 1 && (
+              <audio
+                className="w-full"
+                controls
+                src={audioUrl}
+                typeof="audio/mpeg"
+                key={audioUrl}
+              />
             )}
-            Comentar
-          </Button>
+
+            {audioUrl && (
+              <div className="flex items-center gap-2">
+                <Button
+                  title="Enviar"
+                  onClick={handleAddCommentPost}
+                  loading={loading}
+                >
+                  <Check />
+                </Button>
+
+                <Button
+                  variant="destructive"
+                  title="Não enviar"
+                  onClick={resetAll}
+                  disabled={loading}
+                >
+                  <X />
+                </Button>
+              </div>
+            )}
+
+            {!audioUrl && (
+              <div className="w-full flex justify-end max-sm:justify-center">
+                <Button
+                  title="Comentar"
+                  variant={recording ? "destructive" : "default"}
+                  onClick={handlePlayAndStopRecording}
+                >
+                  {recording ? (
+                    <Circle className="w-5 h-5 mr-2" />
+                  ) : (
+                    <Mic className="w-5 h-5 mr-2" />
+                  )}
+                  Comentar
+                </Button>
+              </div>
+            )}
+          </div>
         }
       />
     </div>
