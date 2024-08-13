@@ -9,6 +9,7 @@ import { CardProfileUsersProps } from "./types";
 import { useCardProfileUsers } from "./userCardProfileUsers";
 
 export const CardProfileUsers = ({
+  id,
   name,
   username,
   description,
@@ -16,9 +17,16 @@ export const CardProfileUsers = ({
   following,
   gender,
   url_img,
+  isFollowing,
 }: CardProfileUsersProps) => {
-  const { getNameInitials, setImageProfile, handleFollowing } =
-    useCardProfileUsers();
+  const {
+    getNameInitials,
+    setImageProfile,
+    handleFollowing,
+    handleUnfollowing,
+    handleRedirectDetailsPerfil,
+    loading,
+  } = useCardProfileUsers(id);
 
   return (
     <Card className="w-full max-w-[400px]">
@@ -49,14 +57,38 @@ export const CardProfileUsers = ({
           </div>
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex gap-4">
+        {isFollowing && (
+          <Button
+            variant="outline"
+            className="w-full"
+            title={`Deixa de seguir ${name}`}
+            onClick={handleUnfollowing}
+            loading={loading}
+          >
+            Seguindo
+          </Button>
+        )}
+
+        {!isFollowing && (
+          <Button
+            variant="outline"
+            className="w-full"
+            title={`Seguir ${name}`}
+            onClick={handleFollowing}
+            loading={loading}
+          >
+            Seguir
+          </Button>
+        )}
+
         <Button
           variant="outline"
           className="w-full"
-          title={`Seguir ${name}`}
-          onClick={handleFollowing}
+          title="Visualizar perfil"
+          onClick={() => handleRedirectDetailsPerfil(id)}
         >
-          Seguir
+          Visualizar Perfil
         </Button>
       </CardFooter>
     </Card>

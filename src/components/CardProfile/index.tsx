@@ -17,7 +17,6 @@ import {
 } from "../ui/select";
 import { Label } from "../ui/label";
 
-import { useAuthContext } from "@/context/auth";
 import { CardProfileProps } from "./types";
 import { useCardProfile } from "./useCardProfile";
 import { getNameInitials } from "@/utils/getNamesInitials";
@@ -27,9 +26,8 @@ export const CardProfile = ({
   followers,
   following,
   postsUser,
+  dataUser,
 }: CardProfileProps) => {
-  const { datasUser } = useAuthContext();
-
   const {
     handleEditProfile,
     name,
@@ -42,7 +40,10 @@ export const CardProfile = ({
     setGender,
     loading,
     handleChooseFileImg,
-  } = useCardProfile();
+    datasUser,
+    handleFollowing,
+    handleUnfollowing,
+  } = useCardProfile(dataUser?.id);
 
   useEffect(() => {
     if (datasUser) {
@@ -56,33 +57,33 @@ export const CardProfile = ({
   return (
     <Card className="w-full max-w-[800px]">
       <CardHeader>
-        <CardTitle className="text-center">Seu perfil</CardTitle>
+        <CardTitle className="text-center"></CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4">
         <div className="flex justify-center items-center gap-4">
           <Avatar className="w-16 h-16">
             <AvatarImage
               src={
-                datasUser?.photo_profile
-                  ? datasUser.photo_profile
+                dataUser?.photo_profile
+                  ? dataUser.photo_profile
                   : "/img-default-profile-man.png"
               }
             />
-            {datasUser && (
-              <AvatarFallback>{getNameInitials(datasUser?.name)}</AvatarFallback>
+            {dataUser && (
+              <AvatarFallback>{getNameInitials(dataUser?.name)}</AvatarFallback>
             )}
           </Avatar>
           <div>
-            <h3 className="text-lg font-bold">{datasUser?.name}</h3>
+            <h3 className="text-lg font-bold">{dataUser?.name}</h3>
             <p className="text-md text-muted-foreground">
-              @{datasUser?.username}
+              @{dataUser?.username}
             </p>
-            <p className="text-sm text-muted-foreground">{datasUser?.gender}</p>
+            <p className="text-sm text-muted-foreground">{dataUser?.gender}</p>
           </div>
         </div>
         <div>
           <p className="text-center text-sm max-sm:text-center">
-            {datasUser?.description}
+            {dataUser?.description}
           </p>
         </div>
         <div className="grid grid-cols-3 gap-2 text-center">
@@ -99,74 +100,99 @@ export const CardProfile = ({
             <p className="text-sm text-muted-foreground">Postagens</p>
           </div>
         </div>
-        <ModalDialog
-          title="Editar Perfil"
-          elementStart={<Button variant="outline">Editar Perfil</Button>}
-          elementContent={
-            <div>
-              <div className="my-2">
-                <Label htmlFor="name">Nome</Label>
-                <Input
-                  id="name"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                />
-              </div>
 
-              <div className="my-2">
-                <Label htmlFor="username">Nome de usuário</Label>
-                <Input
-                  id="username"
-                  value={username}
-                  onChange={(event) => setUsername(event.target.value)}
-                />
-              </div>
+        {dataUser?.id === datasUser?.id && (
+          <ModalDialog
+            title="Editar Perfil"
+            elementStart={<Button variant="outline">Editar Perfil</Button>}
+            elementContent={
+              <div>
+                <div className="my-2">
+                  <Label htmlFor="name">Nome</Label>
+                  <Input
+                    id="name"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                  />
+                </div>
 
-              <div className="my-2">
-                <Label htmlFor="description">Descrição</Label>
-                <Input
-                  id="description"
-                  value={description ?? ""}
-                  onChange={(event) => setDescription(event.target.value)}
-                />
-              </div>
+                <div className="my-2">
+                  <Label htmlFor="username">Nome de usuário</Label>
+                  <Input
+                    id="username"
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)}
+                  />
+                </div>
 
-              <div className="my-2">
-                <Label htmlFor="gender">Gênero</Label>
-                <Select
-                  value={gender}
-                  onValueChange={(currentValue) => setGender(currentValue)}
-                >
-                  <SelectTrigger id="gender">
-                    <SelectValue placeholder="Gênero" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Gênero</SelectLabel>
-                      <SelectItem value="Masculino">Masculino</SelectItem>
-                      <SelectItem value="Feminino">Feminino</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
+                <div className="my-2">
+                  <Label htmlFor="description">Descrição</Label>
+                  <Input
+                    id="description"
+                    value={description ?? ""}
+                    onChange={(event) => setDescription(event.target.value)}
+                  />
+                </div>
 
-              <div className="my-2">
-                <Label htmlFor="image">Selecione do seu dispositivo</Label>
-                <Input
-                  id="image"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleChooseFileImg}
-                />
+                <div className="my-2">
+                  <Label htmlFor="gender">Gênero</Label>
+                  <Select
+                    value={gender}
+                    onValueChange={(currentValue) => setGender(currentValue)}
+                  >
+                    <SelectTrigger id="gender">
+                      <SelectValue placeholder="Gênero" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Gênero</SelectLabel>
+                        <SelectItem value="Masculino">Masculino</SelectItem>
+                        <SelectItem value="Feminino">Feminino</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="my-2">
+                  <Label htmlFor="image">Selecione do seu dispositivo</Label>
+                  <Input
+                    id="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleChooseFileImg}
+                  />
+                </div>
               </div>
-            </div>
-          }
-          elementFooter={
-            <Button onClick={handleEditProfile} loading={loading}>
-              Salvar dados
-            </Button>
-          }
-        />
+            }
+            elementFooter={
+              <Button onClick={handleEditProfile} loading={loading}>
+                Salvar dados
+              </Button>
+            }
+          />
+        )}
+
+        {dataUser?.id !== datasUser?.id && dataUser.isFollowing && (
+          <Button
+            variant="outline"
+            title={`Seguir ${dataUser.name}`}
+            onClick={handleUnfollowing}
+            loading={loading}
+          >
+            Seguindo
+          </Button>
+        )}
+
+        {dataUser?.id !== datasUser?.id && !dataUser.isFollowing && (
+          <Button
+            variant="outline"
+            title={`Seguir ${dataUser.name}`}
+            onClick={handleFollowing}
+            loading={loading}
+          >
+            Seguir
+          </Button>
+        )}
       </CardContent>
     </Card>
   );

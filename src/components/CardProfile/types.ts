@@ -4,4 +4,5 @@ export interface CardProfileProps {
   following: number;
   followers: number;
   postsUser: PostsByUserProps;
+  dataUser: UserProps;
 }

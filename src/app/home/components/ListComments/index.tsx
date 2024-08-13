@@ -22,6 +22,9 @@ export const ListComments = ({ data, setVisibleModalComments }: ListCommentsProp
 
   return (
     <div className="flex flex-col gap-4 p-4 max-h-[400px] overflow-auto">
+      {data && data.length === 0 && (
+        <h1 className="text-center">Nenhum comentário encontrado</h1>
+      )}
       {data &&
         data.map((value) => {
           return (

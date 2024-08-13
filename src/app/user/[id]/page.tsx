@@ -33,6 +33,18 @@ const getPostsByUser = async (idUser: string) => {
   }
 };
 
+const getDataUser = async (idUser: string) => {
+  try{
+    const response = await api.get(`users/${idUser}`);
+
+    if(response.status){
+      return response.data;
+    }
+  }catch(error){
+    console.error(error);
+  }
+}
+
 export default async function UserDetails({
   params,
 }: {
@@ -44,15 +56,20 @@ export default async function UserDetails({
     cookiesStore.get("@social_network:token_user")?.value
   }`;
 
+  const idUser = JSON.parse(cookiesStore.get("@social_network:datas_user")?.value as string).id ;
+
   const informationsUser: InformationsUsersProps =
     await getInformationsFollowsUser(params.id);
 
   const postsUsers: PostsByUserProps = await getPostsByUser(params.id);
 
+  const dataUser: UserProps = await getDataUser(params.id);
+
   return (
     <div className="p-5 max-md:pb-24">
       <div className="flex justify-center">
         <CardProfile
+          dataUser={dataUser}
           postsUser={postsUsers}
           followers={informationsUser?.followers}
           following={informationsUser?.following}
@@ -76,7 +93,7 @@ export default async function UserDetails({
             </div>
           </>
         )}
-        {postsUsers?.posts.length === 0 && (
+        {dataUser?.id === idUser && postsUsers?.posts.length === 0 && (
           <div className="flex flex-col gap-4 my-10 justify-center items-center">
             <Camera className="w-14 h-14" />
             <h1 className="text-2xl font-bold">Compartilhe Fotos</h1>

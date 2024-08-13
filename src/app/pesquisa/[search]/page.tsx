@@ -31,10 +31,12 @@ export default async function SearchPosts({
     cookiesStore.get("@social_network:token_user")?.value
   }`;
 
+  api.defaults.headers.common.user_id = JSON.parse(cookiesStore.get("@social_network:datas_user")?.value as string).id;
+
   const listUsers: ListUsersPaginationProps = await SearchUsers(params.search);
 
   return (
-    <main className="p-5 max-md:pb-24">
+    <div className="p-5 max-md:pb-24">
       <Tabs defaultValue="account" className="my-5">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="account">Contas</TabsTrigger>
@@ -42,10 +44,15 @@ export default async function SearchPosts({
         </TabsList>
         <TabsContent value="account">
           <div className="flex flex-wrap gap-4 justify-center">
-            {listUsers?.items?.map((value) => {
+            {listUsers?.items.length === 0 && (
+              <h1 className="text-2xl mt-8">Nehuma pessoa encontrada</h1>
+            )}
+
+            {listUsers?.items?.length > 0 && listUsers?.items?.map((value) => {
               return (
                 <CardProfileUsers
                   key={value.id}
+                  id={value.id}
                   name={value.name}
                   username={value.username}
                   description={value.description ?? ""}
@@ -53,6 +60,7 @@ export default async function SearchPosts({
                   following={value.followingCount}
                   gender={value.gender}
                   url_img={value.photo_profile}
+                  isFollowing={value.isFollowing}
                 />
               );
             })}
@@ -86,6 +94,6 @@ export default async function SearchPosts({
           </div>
         </TabsContent>
       </Tabs>
-    </main>
+    </div>
   );
 }

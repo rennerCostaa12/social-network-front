@@ -11,6 +11,7 @@ export interface ListUsersProps {
   updated_at: string;
   followerCount: number;
   followingCount: number;
+  isFollowing: boolean;
 }
 
 export interface ListUsersPaginationProps {

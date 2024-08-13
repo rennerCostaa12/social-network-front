@@ -10,7 +10,9 @@ import { useRouter } from "next/navigation";
 import { ResizeImage } from "@/utils/resizeImage";
 import { TransformBase64ToFile } from "@/utils/transformBase64ToFile";
 
-export const useCardProfile = () => {
+import { FollowingUsersService } from "@/services/following-users";
+
+export const useCardProfile = (idUser: string) => {
   const [name, setName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [gender, setGender] = useState<string>("");
@@ -98,6 +100,40 @@ export const useCardProfile = () => {
     }
   };
 
+  const handleFollowing = async () => {
+    setLoading(true);
+    const responseFollowing = await FollowingUsersService.followingUser(
+      datasUser?.id as string,
+      idUser
+    );
+    setLoading(false);
+
+    if (responseFollowing?.status) {
+      router.refresh();
+    } else {
+      toast.error("Error", {
+        description: responseFollowing?.message,
+      });
+    }
+  };
+
+  const handleUnfollowing = async () => {
+    setLoading(true);
+    const responseUnfollowing = await FollowingUsersService.unfollowingUser(
+      datasUser?.id as string,
+      idUser
+    );
+    setLoading(false);
+
+    if (responseUnfollowing?.status) {
+      router.refresh();
+    } else {
+      toast.error("Error", {
+        description: responseUnfollowing?.message,
+      });
+    }
+  };
+
   return {
     handleEditProfile,
     name,
@@ -110,5 +146,8 @@ export const useCardProfile = () => {
     setDescription,
     loading,
     handleChooseFileImg,
+    datasUser,
+    handleFollowing,
+    handleUnfollowing
   };
 };

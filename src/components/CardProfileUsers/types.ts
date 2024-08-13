@@ -1,4 +1,5 @@
 export interface CardProfileUsersProps {
+    id: string;
     name: string;
     username: string;
     description: string;
@@ -6,4 +7,5 @@ export interface CardProfileUsersProps {
     followers: number;
     following: number;
     url_img: string | null;
+    isFollowing: boolean;
 }

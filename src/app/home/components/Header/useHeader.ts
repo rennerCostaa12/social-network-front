@@ -9,21 +9,21 @@ export const useHeader = () => {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const refInputSearch = useRef<HTMLInputElement | null>(null);
 
-  const { push } = useRouter();
+  const router = useRouter();
 
   const { datasUser, signOut } = useAuthContext();
 
   const handleRedirectMyProfile = () => {
-    push(`/user/${datasUser?.id}`);
+    router.push(`/user/${datasUser?.id}`);
   };
 
   const handleSearch = (valueInput: string) => {
-    push(`/pesquisa/${valueInput}`);
+    router.push(`/pesquisa/${valueInput}`);
   };
 
   const handleLogout = () => {
     signOut();
-    push(`/login`);
+    router.push(`/login`);
   };
 
   return {
