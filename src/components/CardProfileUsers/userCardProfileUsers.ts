@@ -2,7 +2,7 @@ import { toast } from "sonner";
 import { getNameInitials } from "@/utils/getNamesInitials";
 import { useRouter } from "next/navigation";
 
-import { FollowingUsersService } from "@/services/following-users";
+import { FollowingUsersServices } from "@/services/following-users";
 import { useState } from "react";
 
 import { useAuthContext } from "@/context/auth";
@@ -27,7 +27,7 @@ export const useCardProfileUsers = (idUser: string) => {
 
   const handleFollowing = async () => {
     setLoading(true);
-    const responseFollowing = await FollowingUsersService.followingUser(
+    const responseFollowing = await FollowingUsersServices.followingUser(
       datasUser?.id as string,
       idUser
     );
@@ -44,7 +44,7 @@ export const useCardProfileUsers = (idUser: string) => {
 
   const handleUnfollowing = async () => {
     setLoading(true);
-    const responseUnfollowing = await FollowingUsersService.unfollowingUser(
+    const responseUnfollowing = await FollowingUsersServices.unfollowingUser(
       datasUser?.id as string,
       idUser
     );

@@ -1,6 +1,6 @@
 "use client";
 
-import { ClockIcon, EllipsisVertical, FilePenIcon, Star } from "lucide-react";
+import { ClockIcon, EllipsisVertical, FilePenIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
@@ -12,6 +12,7 @@ import {
 import { ButtonDeletePost } from "@/app/home/components/ButtonDeletePost";
 import { ButtonReactions } from "@/app/home/components/ButtonReactions";
 import { ButtonComments } from "@/app/home/components/ButtonComments";
+import { ButtonSavedPost } from "@/app/home/components/ButtonSavedPost";
 
 import { getNameInitials } from "@/utils/getNamesInitials";
 
@@ -139,7 +140,10 @@ export const Post = ({ data }: PostProps) => {
       <CardFooter className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="flex flex-col items-center">
-            <ButtonReactions />
+            <ButtonReactions
+              idPost={data?.id as string}
+              isReacted={data?.is_reacted as boolean}
+            />
             <span>{data?.reactions}</span>
           </div>
 
@@ -149,9 +153,10 @@ export const Post = ({ data }: PostProps) => {
           </div>
 
           <div className="self-start">
-            <Button variant="ghost" size="icon" title="Salvar">
-              <Star className="w-5 h-5" />
-            </Button>
+            <ButtonSavedPost
+              isSaved={data?.is_saved as boolean}
+              idPost={data?.id as string}
+            />
           </div>
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">

@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { ResizeImage } from "@/utils/resizeImage";
 import { TransformBase64ToFile } from "@/utils/transformBase64ToFile";
 
-import { FollowingUsersService } from "@/services/following-users";
+import { FollowingUsersServices } from "@/services/following-users";
 
 export const useCardProfile = (idUser: string) => {
   const [name, setName] = useState<string>("");
@@ -102,7 +102,7 @@ export const useCardProfile = (idUser: string) => {
 
   const handleFollowing = async () => {
     setLoading(true);
-    const responseFollowing = await FollowingUsersService.followingUser(
+    const responseFollowing = await FollowingUsersServices.followingUser(
       datasUser?.id as string,
       idUser
     );
@@ -119,7 +119,7 @@ export const useCardProfile = (idUser: string) => {
 
   const handleUnfollowing = async () => {
     setLoading(true);
-    const responseUnfollowing = await FollowingUsersService.unfollowingUser(
+    const responseUnfollowing = await FollowingUsersServices.unfollowingUser(
       datasUser?.id as string,
       idUser
     );

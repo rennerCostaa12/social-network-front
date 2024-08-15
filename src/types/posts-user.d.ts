@@ -12,4 +12,6 @@ declare type PostsUserProps = {
   updated_at: string;
   reactions: string;
   comments: string;
+  is_reacted: boolean;
+  is_saved: boolean;
 };

@@ -1,7 +1,7 @@
 import { api } from "@/config/api";
 import axios from "axios";
 
-export const FollowingUsersService = {
+export const FollowingUsersServices = {
   followingUser: async (userIdFollower: string, userIdFollowed: string) => {
     try {
       const responseFollowing = await api.post("users-followers", {

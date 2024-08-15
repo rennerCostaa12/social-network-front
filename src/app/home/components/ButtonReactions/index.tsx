@@ -9,16 +9,40 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { useAuthContext } from "@/context/auth";
+import { ButtonReactionsProps } from "./types";
 
-export const ButtonReactions = () => {
-  const { datasUser } = useAuthContext();
+import { useButtonReactions } from "./useButtonReactions";
+
+export const ButtonReactions = ({
+  idPost,
+  isReacted,
+}: ButtonReactionsProps) => {
+  const {
+    handleRegisterReaction,
+    handleUnregisterReaction,
+    datasUser,
+    visibleModalReactions,
+    setVisibleModalReactions,
+  } = useButtonReactions();
 
   return (
-    <Popover>
+    <Popover
+      open={visibleModalReactions}
+      onOpenChange={(currentState) =>
+        setVisibleModalReactions(isReacted ? false : currentState)
+      }
+    >
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" title="Reagir">
-          <HeartIcon className="w-5 h-5" />
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => isReacted && handleUnregisterReaction(idPost)}
+        >
+          <HeartIcon
+            fill={isReacted ? "red" : "none"}
+            strokeWidth={isReacted ? "0px" : "2px"}
+            className="w-5 h-5"
+          />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80" align="center" side="top">
@@ -31,6 +55,7 @@ export const ButtonReactions = () => {
                   size="icon"
                   title={value?.category?.name}
                   key={value.id}
+                  onClick={() => handleRegisterReaction(value.id, idPost)}
                 >
                   <Image
                     className="cursor-pointer rounded-full"

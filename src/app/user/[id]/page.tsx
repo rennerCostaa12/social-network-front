@@ -23,6 +23,13 @@ const getInformationsFollowsUser = async (idUser: string) => {
 
 const getPostsByUser = async (idUser: string) => {
   try {
+    const cookiesStore = cookies();
+    const userLoggedIn = JSON.parse(
+      cookiesStore.get("@social_network:datas_user")?.value as string
+    ).id;
+
+    api.defaults.headers.common.id_user = userLoggedIn;
+
     const response = await api.get(`posts/find-post-by-user/${idUser}`);
 
     if (response.status) {
@@ -34,16 +41,16 @@ const getPostsByUser = async (idUser: string) => {
 };
 
 const getDataUser = async (idUser: string) => {
-  try{
+  try {
     const response = await api.get(`users/${idUser}`);
 
-    if(response.status){
+    if (response.status) {
       return response.data;
     }
-  }catch(error){
+  } catch (error) {
     console.error(error);
   }
-}
+};
 
 export default async function UserDetails({
   params,
@@ -56,7 +63,9 @@ export default async function UserDetails({
     cookiesStore.get("@social_network:token_user")?.value
   }`;
 
-  const idUser = JSON.parse(cookiesStore.get("@social_network:datas_user")?.value as string).id ;
+  const idUser = JSON.parse(
+    cookiesStore.get("@social_network:datas_user")?.value as string
+  ).id;
 
   const informationsUser: InformationsUsersProps =
     await getInformationsFollowsUser(params.id);
