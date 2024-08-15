@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,9 +10,11 @@ import { FormSchemaRegister } from "./schema";
 import { RegisterUserServices } from "./services";
 
 export const useRegisterUser = () => {
-  const { handleSubmit, control, setValue } = useForm<TypeFormSchemaRegister>({
+  const { handleSubmit, control, setValue, formState: { errors } } = useForm<TypeFormSchemaRegister>({
     resolver: zodResolver(FormSchemaRegister),
   });
+
+  const [imageCaptured, setImageCaptured] = useState<File | null>(null);
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -56,6 +58,18 @@ export const useRegisterUser = () => {
     }
   };
 
+  const handleRemoveFileSelected = () => {
+    setImageCaptured(null);
+  }
+
+  useEffect(() => {
+    if(imageCaptured){
+      setValue("image_profile", [imageCaptured])
+    }else{
+      setValue("image_profile", null);
+    }
+  }, [imageCaptured])
+
   return {
     handleRedirectLogin,
     handleSubmit,
@@ -64,5 +78,8 @@ export const useRegisterUser = () => {
     control,
     loading,
     setValue,
+    imageCaptured,
+    setImageCaptured,
+    handleRemoveFileSelected
   };
 };

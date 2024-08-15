@@ -1,11 +1,11 @@
 "use client";
 
+import { Trash } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/ui/button";
-
-import { useRegisterUser } from "./useRegisterUser";
+import { ModalWebcamTakePhoto } from "@/components/ModalWebcamTakePhoto";
 import {
   Select,
   SelectContent,
@@ -16,6 +16,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { useRegisterUser } from "./useRegisterUser";
+
 export default function RegisterUser() {
   const {
     handleRedirectLogin,
@@ -24,7 +26,9 @@ export default function RegisterUser() {
     handleRegisterUser,
     handleSubmit,
     loading,
-    setValue,
+    imageCaptured,
+    setImageCaptured,
+    handleRemoveFileSelected,
   } = useRegisterUser();
 
   return (
@@ -170,20 +174,26 @@ export default function RegisterUser() {
                   name="image_profile"
                   render={({ fieldState: { error } }) => (
                     <div className="grid gap-2">
-                      <Label htmlFor="photo_profile">Foto de perfil</Label>
-                      <Input.Root>
-                        <Input.Content
-                          className="cursor-pointer"
-                          type="file"
-                          id="photo_profile"
-                          onChange={(event) => {
-                            const { target } = event;
-                            if (target.files) {
-                              setValue("image_profile", target.files);
-                            }
-                          }}
-                        />
-                      </Input.Root>
+                      <ModalWebcamTakePhoto
+                        imgCaptured={imageCaptured}
+                        setImgCaptured={setImageCaptured}
+                      />
+
+                      {imageCaptured && (
+                        <div className="flex items-center justify-between">
+                          <span>{`${imageCaptured.name}.${
+                            imageCaptured.type.split("/")[1]
+                          }`}</span>
+
+                          <Button
+                            variant="outline"
+                            title="Remover imagem"
+                            onClick={handleRemoveFileSelected}
+                          >
+                            <Trash className="w-4 h-4" color="red" />
+                          </Button>
+                        </div>
+                      )}
 
                       {error?.message && (
                         <Input.Message color="error" message={error.message} />
