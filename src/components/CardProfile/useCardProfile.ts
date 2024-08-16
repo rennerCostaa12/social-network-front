@@ -1,14 +1,11 @@
-import { v4 as uuidv4 } from "uuid";
 import { File } from "buffer";
 import { toast } from "sonner";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 
 import { CardProfileService } from "./service";
 
 import { useAuthContext } from "@/context/auth";
 import { useRouter } from "next/navigation";
-import { ResizeImage } from "@/utils/resizeImage";
-import { TransformBase64ToFile } from "@/utils/transformBase64ToFile";
 
 import { FollowingUsersServices } from "@/services/following-users";
 
@@ -17,7 +14,7 @@ export const useCardProfile = (idUser: string) => {
   const [username, setUsername] = useState<string>("");
   const [gender, setGender] = useState<string>("");
   const [description, setDescription] = useState<string | null>(null);
-  const [imgFile, setImgFile] = useState<File | undefined>(undefined);
+  const [imageCaptured, setImageCaptured] = useState<File | null>(null);
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -25,28 +22,28 @@ export const useCardProfile = (idUser: string) => {
 
   const router = useRouter();
 
-  const handleChooseFileImg = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files;
+  // const handleChooseFileImg = async (event: ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files;
 
-    if (file) {
-      const image = await ResizeImage(
-        file[0],
-        800,
-        600,
-        "PNG",
-        100,
-        0,
-        "base64"
-      );
+  //   if (file) {
+  //     const image = await ResizeImage(
+  //       file[0],
+  //       800,
+  //       600,
+  //       "PNG",
+  //       100,
+  //       0,
+  //       "base64"
+  //     );
 
-      const urlImgConvertedFile = TransformBase64ToFile(
-        image as string,
-        uuidv4()
-      );
+  //     const urlImgConvertedFile = TransformBase64ToFile(
+  //       image as string,
+  //       uuidv4()
+  //     );
 
-      setImgFile(urlImgConvertedFile as any);
-    }
-  };
+  //     setImgFile(urlImgConvertedFile as any);
+  //   }
+  // };
 
   const handleEditProfile = async () => {
     const objectUserData = {
@@ -63,7 +60,7 @@ export const useCardProfile = (idUser: string) => {
     const responseEditProfile = await CardProfileService.editProfile(
       datasUser?.id as string,
       objectUserData as any,
-      imgFile as any
+      imageCaptured as any
     );
 
     setLoading(false);
@@ -87,7 +84,7 @@ export const useCardProfile = (idUser: string) => {
         JSON.stringify(objectUpdated)
       );
 
-      if (imgFile) {
+      if (imageCaptured) {
         window.location.reload();
         return;
       }
@@ -134,6 +131,10 @@ export const useCardProfile = (idUser: string) => {
     }
   };
 
+  const handleRemoveFileSelected = () => {
+    setImageCaptured(null);
+  }
+
   return {
     handleEditProfile,
     name,
@@ -145,9 +146,11 @@ export const useCardProfile = (idUser: string) => {
     description,
     setDescription,
     loading,
-    handleChooseFileImg,
     datasUser,
     handleFollowing,
-    handleUnfollowing
+    handleUnfollowing,
+    imageCaptured,
+    setImageCaptured,
+    handleRemoveFileSelected
   };
 };

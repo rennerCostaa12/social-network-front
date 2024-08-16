@@ -17,10 +17,13 @@ import {
 } from "../ui/select";
 import { Label } from "../ui/label";
 
+import { ModalWebcamTakePhoto } from "../ModalWebcamTakePhoto";
+
 import { CardProfileProps } from "./types";
 import { useCardProfile } from "./useCardProfile";
 import { getNameInitials } from "@/utils/getNamesInitials";
 import { useEffect } from "react";
+import { Trash } from "lucide-react";
 
 export const CardProfile = ({
   followers,
@@ -39,10 +42,12 @@ export const CardProfile = ({
     gender,
     setGender,
     loading,
-    handleChooseFileImg,
     datasUser,
     handleFollowing,
     handleUnfollowing,
+    imageCaptured,
+    setImageCaptured,
+    handleRemoveFileSelected,
   } = useCardProfile(dataUser?.id);
 
   useEffect(() => {
@@ -154,13 +159,26 @@ export const CardProfile = ({
                 </div>
 
                 <div className="my-2">
-                  <Label htmlFor="image">Selecione do seu dispositivo</Label>
-                  <Input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleChooseFileImg}
+                  <ModalWebcamTakePhoto
+                    imgCaptured={imageCaptured as any}
+                    setImgCaptured={setImageCaptured as any}
                   />
+
+                  {imageCaptured && (
+                    <div className="flex items-center justify-between my-2">
+                      <span>{`${imageCaptured.name}.${
+                        imageCaptured.type.split("/")[1]
+                      }`}</span>
+
+                      <Button
+                        variant="outline"
+                        title="Remover imagem"
+                        onClick={handleRemoveFileSelected}
+                      >
+                        <Trash className="w-4 h-4" color="red" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             }
