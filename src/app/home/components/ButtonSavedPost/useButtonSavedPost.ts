@@ -7,7 +7,6 @@ export const useButtonSavedPost = () => {
   const router = useRouter();
 
   const handleSavePost = async (idPost: string) => {
-    console.log("CHAMANDO AQUI")
     const responseSavePost = await SavePostServices.savePost(idPost);
 
     if (responseSavePost?.status) {
@@ -25,8 +24,6 @@ export const useButtonSavedPost = () => {
 
   const handleRemovePost = async (idPost: string) => {
     const responseRemovePost = await SavePostServices.removeSavedPost(idPost);
-
-    console.log("CHAMANDO AQUI")
 
     if (responseRemovePost?.status) {
       toast.success("Sucesso", {

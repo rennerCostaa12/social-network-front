@@ -14,6 +14,9 @@ export const useButtonAddPost = () => {
   const [urlFile, setUrlFile] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  
+  const [fileVideo, setFileVideo] = useState<File | null>(null);
+
   const {
     audioUrl,
     recording,
@@ -71,7 +74,7 @@ export const useButtonAddPost = () => {
   };
 
   const handleSavePost = async () => {
-    if (!fileSelected) {
+    if (!fileVideo) {
       toast.warning("Alerta", {
         description: "Você precisa escolher um arquivo para realizar um post!",
       });
@@ -83,7 +86,7 @@ export const useButtonAddPost = () => {
     const responsePost = await ServicesGeneral.addPost(
       datasUser?.id as string,
       audioFile as File,
-      fileSelected,
+      fileVideo,
       756
     );
     setLoading(false);
@@ -103,7 +106,7 @@ export const useButtonAddPost = () => {
 
   const isVideo = fileSelected?.type.includes("video");
   const extensionVideo = isVideo ? fileSelected?.name.split(".").pop() : null;
-
+  
   return {
     handleChooseFile,
     handlePlayAndStopRecording,
@@ -116,6 +119,8 @@ export const useButtonAddPost = () => {
     urlFile,
     fileSelected,
     extensionVideo,
-    isVideo
+    isVideo,
+    setFileVideo,
+    fileVideo
   };
 };

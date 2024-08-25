@@ -12,11 +12,18 @@ const videoExtensions = [
   ".wmv",
 ];
 
-export const usePost = () => {
+export const usePost = (data: PostsUserProps | undefined) => {
   const { datasUser } = useAuthContext();
+
+  const extensionPicture = data && data?.picture.split(".").pop();
+
+  const isVideo =
+    data && videoExtensions.includes(`.${extensionPicture as string}`);
+
 
   return {
     datasUser,
-    videoExtensions
+    videoExtensions,
+    isVideo
   };
 };

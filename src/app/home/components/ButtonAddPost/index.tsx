@@ -1,22 +1,19 @@
 "use client";
 
 import { Circle, Mic } from "lucide-react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ModalDialog } from "@/components/ModalDialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { VideoRecorder } from "@/components/VideoRecorder";
 
 import { useButtonAddPost } from "./useButtonAddPost";
 
 import { ButtonAddPostProps } from "./types";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { useAuthContext } from "@/context/auth";
 
 export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
   const {
-    handleChooseFile,
-    urlFile,
     handlePlayAndStopRecording,
     recording,
     audioUrl,
@@ -24,8 +21,8 @@ export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
     handleSavePost,
     isOpenModal,
     setIsOpenModal,
-    extensionVideo,
-    isVideo,
+    setFileVideo,
+    fileVideo,
   } = useButtonAddPost();
 
   const { datasUser } = useAuthContext();
@@ -77,21 +74,30 @@ export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
                     controls
                     src={audioUrl}
                     typeof="audio/mpeg"
+                    key={audioUrl}
                   />
                 </div>
               )}
             </div>
 
             <div className="grid gap-1">
-              <Label htmlFor="image">Selecione do seu dispositivo</Label>
+              <VideoRecorder setFileVideo={setFileVideo} />
+              {/* <Label htmlFor="image">Selecione do seu dispositivo</Label>
               <Input
                 id="image"
                 type="file"
                 accept="image/*, video/mp4"
                 onChange={handleChooseFile}
-              />
+              /> */}
             </div>
-            <div className="flex items-center justify-center">
+
+            {fileVideo && (
+              <div className="flex items-center justify-center">
+               
+              </div>
+            )}
+
+            {/* <div className="flex items-center justify-center">
               {isVideo ? (
                 <video width={250} height={250} controls key={urlFile}>
                   <source
@@ -108,7 +114,7 @@ export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
                   className="w-[500px] h-[500px] rounded-lg border"
                 />
               )}
-            </div>
+            </div> */}
           </div>
         }
         elementFooter={

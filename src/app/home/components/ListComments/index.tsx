@@ -12,13 +12,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical, FilePenIcon, TrashIcon } from "lucide-react";
 import { AlertDialog } from "@/components/AlertDialog";
-import { AlertDialogAction, AlertDialogCancel } from "@/components/ui/alert-dialog";
+import {
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
 
 import { useListComments } from "./useListComments";
 
-export const ListComments = ({ data, setVisibleModalComments }: ListCommentsProps) => {
-
-  const { handleDeleteComment, loading } = useListComments({ setVisibleModalComments });
+export const ListComments = ({
+  data,
+  setVisibleModalComments,
+}: ListCommentsProps) => {
+  const { handleDeleteComment, loading, datasUser } = useListComments({
+    setVisibleModalComments,
+  });
 
   return (
     <div className="flex flex-col gap-4 p-4 max-h-[400px] overflow-auto">
@@ -28,7 +35,12 @@ export const ListComments = ({ data, setVisibleModalComments }: ListCommentsProp
       {data &&
         data.map((value) => {
           return (
-            <div className="flex items-center gap-4" key={value.id}>
+            <div
+              className={`flex items-center gap-4 ${
+                datasUser?.id === value.user.id && "bg-slate-200"
+              } p-2 rounded-md`}
+              key={value.id}
+            >
               <div className="flex flex-col items-center">
                 <Avatar>
                   <AvatarImage
@@ -60,51 +72,53 @@ export const ListComments = ({ data, setVisibleModalComments }: ListCommentsProp
                 </small>
               </div>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <EllipsisVertical className="w-5 h-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <Button
-                    title="Editar"
-                    className="w-full cursor-pointer"
-                    variant="ghost"
-                  >
-                    <FilePenIcon className="w-4 h-4 mr-2" />
-                    Editar
-                  </Button>
-                  <AlertDialog
-                    button={
-                      <Button
-                        title="Deletar"
-                        className="w-full cursor-pointer"
-                        variant="ghost"
-                        size="icon"
-                      >
-                        <TrashIcon className="w-4 h-4 mr-2" />
-                        Deletar
-                      </Button>
-                    }
-                    title="Alerta"
-                    description="Deseja realemente deletar este post?"
-                    buttonCancel={
-                      <AlertDialogCancel disabled={loading}>
-                        Cancelar
-                      </AlertDialogCancel>
-                    }
-                    buttonAccept={
-                      <AlertDialogAction
-                        onClick={() => handleDeleteComment(value?.id)}
-                        disabled={loading}
-                      >
-                        Confirmar
-                      </AlertDialogAction>
-                    }
-                  />
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {datasUser?.id === value.user.id && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <EllipsisVertical className="w-5 h-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <Button
+                      title="Editar"
+                      className="w-full cursor-pointer"
+                      variant="ghost"
+                    >
+                      <FilePenIcon className="w-4 h-4 mr-2" />
+                      Editar
+                    </Button>
+                    <AlertDialog
+                      button={
+                        <Button
+                          title="Deletar"
+                          className="w-full cursor-pointer"
+                          variant="ghost"
+                          size="icon"
+                        >
+                          <TrashIcon className="w-4 h-4 mr-2" />
+                          Deletar
+                        </Button>
+                      }
+                      title="Alerta"
+                      description="Deseja realemente deletar este post?"
+                      buttonCancel={
+                        <AlertDialogCancel disabled={loading}>
+                          Cancelar
+                        </AlertDialogCancel>
+                      }
+                      buttonAccept={
+                        <AlertDialogAction
+                          onClick={() => handleDeleteComment(value?.id)}
+                          disabled={loading}
+                        >
+                          Confirmar
+                        </AlertDialogAction>
+                      }
+                    />
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
           );
         })}

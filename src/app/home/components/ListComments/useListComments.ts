@@ -2,6 +2,8 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { useAuthContext } from "@/context/auth";
+
 import { ServicesGeneral } from "@/services/index";
 
 import { UserListCommentsProps } from "./types";
@@ -10,6 +12,7 @@ export const useListComments = ({ setVisibleModalComments }: UserListCommentsPro
   const [loading, setLoading] = useState<boolean>(false);
 
   const router = useRouter();
+  const { datasUser } = useAuthContext();
 
   const handleDeleteComment = async (idComment: string) => {
     setLoading(true);
@@ -33,5 +36,6 @@ export const useListComments = ({ setVisibleModalComments }: UserListCommentsPro
   return {
     handleDeleteComment,
     loading,
+    datasUser
   };
 };

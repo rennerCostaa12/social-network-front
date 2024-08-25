@@ -83,6 +83,40 @@ export const ServicesGeneral = {
       }
     }
   },
+  editPost: async (
+    idPost: string,
+    userId: string,
+    comment: File,
+    picture_post: File
+  ) => {
+    try {
+      const formData = new FormData();
+
+      formData.append("city_id", String(756));
+      formData.append("comment", comment);
+      formData.append("user", userId);
+      formData.append("picture", picture_post);
+
+      const responseEditPost = await api.patch(`posts/${idPost}`, formData);
+
+      if (responseEditPost.status) {
+        return {
+          status: true,
+          message: "Post editado com sucesso",
+          statusCode: 200,
+          data: responseEditPost.data,
+        };
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return {
+          status: false,
+          message: error.response.data.message,
+          statusCode: error.response.status,
+        };
+      }
+    }
+  },
   commentPost: async (comment: File, user: string, post: string) => {
     try {
       const formData = new FormData();

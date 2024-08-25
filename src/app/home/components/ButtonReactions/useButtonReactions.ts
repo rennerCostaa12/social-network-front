@@ -9,6 +9,7 @@ export const useButtonReactions = () => {
   const { datasUser } = useAuthContext();
 
   const [visibleModalReactions, setVisibleModalReactions] = useState<boolean>(false);
+  const [showDescriptionReact, setShowDescriptionReact] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -51,6 +52,8 @@ export const useButtonReactions = () => {
     handleUnregisterReaction,
     datasUser,
     visibleModalReactions,
-    setVisibleModalReactions
+    setVisibleModalReactions,
+    setShowDescriptionReact,
+    showDescriptionReact
   };
 };

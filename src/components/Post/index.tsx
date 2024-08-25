@@ -1,6 +1,6 @@
 "use client";
 
-import { ClockIcon, EllipsisVertical, FilePenIcon } from "lucide-react";
+import { ClockIcon, EllipsisVertical } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
@@ -17,17 +17,12 @@ import { ButtonSavedPost } from "@/app/home/components/ButtonSavedPost";
 import { getNameInitials } from "@/utils/getNamesInitials";
 
 import { usePost } from "./usePost";
+import { ButtonEditPost } from "../ButtonEditPost";
 
 import { PostProps } from "./types";
 
 export const Post = ({ data }: PostProps) => {
-  const { datasUser, videoExtensions } = usePost();
-
-  const extensionPicture = data && data?.picture.split(".").pop();
-
-  const isVideo =
-    data && videoExtensions.includes(`.${extensionPicture as string}`);
-
+  const { datasUser, isVideo } = usePost(data);
   return (
     <Card className="max-w-[900px] relative self-center">
       <CardHeader className="flex items-center gap-4">
@@ -60,14 +55,7 @@ export const Post = ({ data }: PostProps) => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <Button
-                  title="Editar"
-                  className="w-full cursor-pointer"
-                  variant="ghost"
-                >
-                  <FilePenIcon className="w-4 h-4 mr-2" />
-                  Editar
-                </Button>
+                <ButtonEditPost data={data} />
                 <ButtonDeletePost idPost={data?.id as string} />
               </DropdownMenuContent>
             </DropdownMenu>
@@ -75,17 +63,16 @@ export const Post = ({ data }: PostProps) => {
         )}
       </CardHeader>
       <CardContent>
-        {isVideo ? (
+        {isVideo && (
           <video className="rounded-lg w-[500px] h-[600px]" controls>
-            <source
-              src={data.picture as string}
-              type={`video/${extensionPicture}`}
-            />
+            <source src={data?.picture as string} type={`video/mp4`} />
           </video>
-        ) : (
+        )}
+
+        {!isVideo && (
           <img
             src={data ? data.picture : "/img-post-default.svg"}
-            alt="Design"
+            alt={data?.photo_profile ?? ""}
             className="w-[500px] h-[600px] w-min-[500px] h-min-[600px] max-sm:w-[300px] max-sm:h-[400px] rounded-lg object-cover"
           />
         )}
