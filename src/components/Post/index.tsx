@@ -29,15 +29,21 @@ export const Post = ({ data }: PostProps) => {
         <div className="flex flex-col justify-center items-center gap-4 w-full max-w-[600px] min-w-[300px]">
           <Avatar className="w-10 h-10">
             <AvatarImage
-              src={data ? data.photo_profile : "/img-default-profile-man.png"}
+              src={
+                data
+                  ? data?.user?.photo_profile
+                  : "/img-default-profile-man.png"
+              }
             />
             <AvatarFallback>
-              {getNameInitials(data?.name_user as string)}
+              {getNameInitials(data?.user?.name as string)}
             </AvatarFallback>
           </Avatar>
           <div>
-            <h3 className="text-sm font-bold">{data?.name_user}</h3>
-            <p className="text-xs text-muted-foreground">@{data?.username}</p>
+            <h3 className="text-sm font-bold">{data?.user?.name}</h3>
+            <p className="text-xs text-muted-foreground">
+              @{data?.user?.username}
+            </p>
           </div>
           <audio
             className="w-full"
@@ -46,7 +52,7 @@ export const Post = ({ data }: PostProps) => {
             typeof="audio/mpeg"
           />
         </div>
-        {datasUser?.id === data?.id_user && (
+        {datasUser?.id === data?.user?.id && (
           <div className="absolute right-2" title="Opções">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -72,12 +78,12 @@ export const Post = ({ data }: PostProps) => {
         {!isVideo && (
           <img
             src={data ? data.picture : "/img-post-default.svg"}
-            alt={data?.photo_profile ?? ""}
+            alt={data?.user?.photo_profile ?? ""}
             className="w-[500px] h-[600px] w-min-[500px] h-min-[600px] max-sm:w-[300px] max-sm:h-[400px] rounded-lg object-cover"
           />
         )}
 
-        {data && data.tags?.length > 0 && (
+        {data?.tags && data?.tags?.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1 max-h-[px] overflow-auto">
             <small className="bg-black text-white p-1 rounded-lg">
               #futebol

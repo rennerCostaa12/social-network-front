@@ -39,11 +39,11 @@ export const CardSuggestionUsers = () => {
         <div className="flex items-center gap-4 justify-between">
           <Avatar className="w-12 h-12">
             <AvatarImage src="/img-default-profile-man.png" />
-            <AvatarFallback>CB</AvatarFallback>
+            <AvatarFallback>CJ</AvatarFallback>
           </Avatar>
           <div>
-            <h4 className="text-sm font-bold">Cuca Beludo</h4>
-            <p className="text-xs text-muted-foreground">@cucabeludo</p>
+            <h4 className="text-sm font-bold">Carl Jhonson</h4>
+            <p className="text-xs text-muted-foreground">@carljhonson</p>
           </div>
           <Button variant="outline" size="sm" onClick={handleFollow}>
             Seguir
