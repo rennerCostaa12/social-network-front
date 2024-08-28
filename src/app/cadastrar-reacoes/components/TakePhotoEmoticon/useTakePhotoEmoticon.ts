@@ -91,7 +91,7 @@ export const useTakePhotoEmoticon = (data: EmoticonsProps[]) => {
         );
 
         setTimeout(() => {
-          router.push("/home");
+          window.location.reload();
         }, 2000);
       }
     }

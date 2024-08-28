@@ -36,7 +36,9 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
           "@social_network:datas_user"
         );
         api.defaults.headers.common.Authorization = `Bearer ${tokenStorage}`;
-        api.defaults.headers.common.id_user = JSON.parse(responseDatasUser as string).id;
+        api.defaults.headers.common.id_user = JSON.parse(
+          responseDatasUser as string
+        ).id;
       }
     }
   };
@@ -79,7 +81,12 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     );
 
     if (responseDatasUser) {
-      setDatasUser(JSON.parse(responseDatasUser));
+      const datasUserCookie = cookies.get("@social_network:datas_user");
+
+      setDatasUser({
+        ...JSON.parse(responseDatasUser),
+        emoticons_drivers: datasUserCookie.emoticons_drivers,
+      });
     }
     updateHeaders();
   }, []);

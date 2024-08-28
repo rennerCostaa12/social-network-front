@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { DatasUserProps } from "./context/auth/types";
 
 import { ServicesGeneral } from "./services/index";
+import { EmoticonsDriverService } from "./services/emoticons-driver";
 
 const routesPublic = ["login", "cadastro"];
 
@@ -12,6 +13,7 @@ export async function middleware(request: NextRequest) {
   const dataUser = request.cookies.get("@social_network:datas_user");
 
   const { verifyRegisterEmoticonsByUser } = ServicesGeneral;
+  const { getAllEmoticonsDriver } = EmoticonsDriverService;
 
   if (token) {
     const decodedToken = jwt.decode(token) as { exp: number };
@@ -25,7 +27,10 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!token) {
-    if (request.nextUrl.pathname === "/login" || request.nextUrl.pathname === "/cadastro") {
+    if (
+      request.nextUrl.pathname === "/login" ||
+      request.nextUrl.pathname === "/cadastro"
+    ) {
       return NextResponse.next();
     }
     const urlLogin = new URL("/login", request.url);
@@ -63,6 +68,33 @@ export async function middleware(request: NextRequest) {
       );
 
       return response;
+    }
+
+    if (
+      request.nextUrl.pathname.includes("home") &&
+      responseVerifyEmoticonsUser?.data.allEmojiRegistered
+    ) {
+      if (dataUser) {
+        const responseDataUser: DatasUserProps | undefined = JSON.parse(
+          dataUser?.value
+        );
+        if (responseDataUser?.emoticons_drivers.length === 0) {
+          const responseEmticonsDriver: CategoriesEmoticonsProps[] =
+            await getAllEmoticonsDriver(responseDataUser.id);
+          const dataUserUpdated = {
+            ...JSON.parse(dataUser.value),
+            emoticons_drivers: responseEmticonsDriver,
+          };
+          const response = NextResponse.redirect(new URL("/home", request.url));
+
+          response.cookies.set(
+            "@social_network:datas_user",
+            JSON.stringify(dataUserUpdated)
+          );
+
+          return response;
+        }
+      }
     }
 
     if (
