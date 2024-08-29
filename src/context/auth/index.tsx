@@ -85,7 +85,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
       setDatasUser({
         ...JSON.parse(responseDatasUser),
-        emoticons_drivers: datasUserCookie.emoticons_drivers,
+        emoticons_drivers: datasUserCookie ? datasUserCookie?.emoticons_drivers : [],
       });
     }
     updateHeaders();

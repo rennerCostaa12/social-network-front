@@ -10,7 +10,12 @@ import { FormSchemaRegister } from "./schema";
 import { RegisterUserServices } from "./services";
 
 export const useRegisterUser = () => {
-  const { handleSubmit, control, setValue, formState: { errors } } = useForm<TypeFormSchemaRegister>({
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    formState: { errors },
+  } = useForm<TypeFormSchemaRegister>({
     resolver: zodResolver(FormSchemaRegister),
   });
 
@@ -33,9 +38,9 @@ export const useRegisterUser = () => {
       gender: data.gender,
       photo_profile: "",
     };
-    
+
     setLoading(true);
-    
+
     const responseRegister = await RegisterUserServices.registerUser(
       objectData,
       data.image_profile[0]
@@ -49,7 +54,7 @@ export const useRegisterUser = () => {
       });
 
       setTimeout(() => {
-        router.push("/login");
+        window.location.href = "/login";
       }, 2000);
     } else {
       toast.error("Error", {
@@ -60,15 +65,15 @@ export const useRegisterUser = () => {
 
   const handleRemoveFileSelected = () => {
     setImageCaptured(null);
-  }
+  };
 
   useEffect(() => {
-    if(imageCaptured){
-      setValue("image_profile", [imageCaptured])
-    }else{
+    if (imageCaptured) {
+      setValue("image_profile", [imageCaptured]);
+    } else {
       setValue("image_profile", null);
     }
-  }, [imageCaptured])
+  }, [imageCaptured]);
 
   return {
     handleRedirectLogin,
@@ -80,6 +85,6 @@ export const useRegisterUser = () => {
     setValue,
     imageCaptured,
     setImageCaptured,
-    handleRemoveFileSelected
+    handleRemoveFileSelected,
   };
 };
