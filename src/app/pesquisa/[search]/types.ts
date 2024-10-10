@@ -15,12 +15,12 @@ export interface ListUsersProps {
 }
 
 export interface ListUsersPaginationProps {
-  items: ListUsersProps[];
-  meta: {
-    totalItems: number;
-    itemCount: number;
-    itemsPerPage: number;
-    totalPages: number;
-    currentPage: number;
+  data: ListUsersProps[];
+}
+
+export interface SearchPostsProps {
+  params: { search: string };
+  searchParams: {
+    [key: string]: string | undefined;
   };
 }

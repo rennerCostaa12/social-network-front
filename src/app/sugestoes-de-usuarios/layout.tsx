@@ -3,8 +3,8 @@ import { Header } from "@/app/home/components/Header";
 import { Footer } from "@/app/home/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Detalhes de usuário",
-  description: "Detalhes de usuário",
+  title: "Sugestões de usuários",
+  description: "Sugestões de usuários",
 };
 
 export default function RootLayout({

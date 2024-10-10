@@ -3,8 +3,11 @@ import type { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import { DatasUserProps } from "./context/auth/types";
 
+import { UsersServices } from "./services/users";
 import { ServicesGeneral } from "./services/index";
 import { EmoticonsDriverService } from "./services/emoticons-driver";
+import { api } from "./config/api";
+import { cookies } from "next/headers";
 
 const routesPublic = ["login", "cadastro"];
 
@@ -14,6 +17,13 @@ export async function middleware(request: NextRequest) {
 
   const { verifyRegisterEmoticonsByUser } = ServicesGeneral;
   const { getAllEmoticonsDriver } = EmoticonsDriverService;
+  const { getFollowsUser } = UsersServices;
+
+  const cookiesStore = cookies();
+
+  api.defaults.headers.common.Authorization = `Bearer ${
+    cookiesStore.get("@social_network:token_user")?.value
+  }`;
 
   if (token) {
     const decodedToken = jwt.decode(token) as { exp: number };
@@ -70,6 +80,32 @@ export async function middleware(request: NextRequest) {
       return response;
     }
 
+    if (request.nextUrl.pathname.includes("home")) {
+      const user: DatasUserProps | undefined = JSON.parse(
+        dataUser?.value as string
+      );
+
+      const responseFollowsUser = await getFollowsUser(user?.id as string);
+
+      if (responseFollowsUser?.data.following < 5) {
+        return NextResponse.redirect(
+          new URL("/sugestoes-de-usuarios", request.url)
+        );
+      }
+    }
+
+    if (request.nextUrl.pathname.includes("sugestoes-de-usuarios")) {
+      const user: DatasUserProps | undefined = JSON.parse(
+        dataUser?.value as string
+      );
+
+      const responseFollowsUser = await getFollowsUser(user?.id as string);
+
+      if (responseFollowsUser?.data.following >= 5) {
+        return NextResponse.redirect(new URL("/home", request.url));
+      }
+    }
+
     if (
       request.nextUrl.pathname.includes("home") &&
       responseVerifyEmoticonsUser?.data.allEmojiRegistered
@@ -111,11 +147,13 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/",
+    "/sugestoes-de-usuarios",
     "/home/:path*",
     "/pesquisa/:path*",
     "/user/:path*",
     "/login",
     "/cadastrar-reacoes/",
     "/cadastro",
+    "/",
   ],
 };

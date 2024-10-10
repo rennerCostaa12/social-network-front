@@ -1,18 +1,23 @@
 "use client";
 
 import { ClockIcon, EllipsisVertical } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { ButtonDeletePost } from "@/app/home/components/ButtonDeletePost";
-import { ButtonReactions } from "@/app/home/components/ButtonReactions";
-import { ButtonComments } from "@/app/home/components/ButtonComments";
-import { ButtonSavedPost } from "@/app/home/components/ButtonSavedPost";
+} from "@/components/ui/dropdown-menu";
+import { ButtonDeletePost } from "@/components/ButtonDeletePost";
+import { ButtonReactions } from "@/components/ButtonReactions";
+import { ButtonComments } from "@/components/ButtonComments";
+import { ButtonSavedPost } from "@/components/ButtonSavedPost";
 
 import { getNameInitials } from "@/utils/getNamesInitials";
 

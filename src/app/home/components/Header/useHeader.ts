@@ -18,12 +18,12 @@ export const useHeader = () => {
   };
 
   const handleSearch = (valueInput: string) => {
-    router.push(`/pesquisa/${valueInput}`);
+    router.push(`/pesquisa/${valueInput}?page=1`);
   };
 
   const handleLogout = () => {
     signOut();
-    router.push(`/login`);
+    window.location.href = "/login";
   };
 
   return {
@@ -33,6 +33,6 @@ export const useHeader = () => {
     setIsSearching,
     refInputSearch,
     handleLogout,
-    getNameInitials
+    getNameInitials,
   };
 };

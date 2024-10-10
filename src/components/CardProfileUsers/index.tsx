@@ -44,7 +44,7 @@ export const CardProfileUsers = ({
           </div>
         </div>
         <div>
-          <p className="text-center max-sm:text-justify">{description}</p>
+          <p className="text-center">{description}</p>
         </div>
         <div className="flex justify-center gap-10 text-center">
           <div>

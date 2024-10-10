@@ -71,7 +71,9 @@ export const CardProfile = ({
               src={
                 dataUser?.photo_profile
                   ? dataUser.photo_profile
-                  : "/img-default-profile-man.png"
+                  : `/img-default-profile-${
+                      dataUser.gender === "Masculino" ? "man" : "woman"
+                    }.png`
               }
             />
             {dataUser && (

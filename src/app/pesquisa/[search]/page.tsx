@@ -1,12 +1,10 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Post } from "@/components/Post";
-import { CardProfileUsers } from "@/components/CardProfileUsers";
+import { cookies } from "next/headers";
 
 import { UsersServices } from "@/services/users";
-import { cookies } from "next/headers";
 import { api } from "@/config/api";
 
-import { ListUsersPaginationProps } from "./types";
+import { ListUsersProps, SearchPostsProps } from "./types";
+import { CardProfileUsers } from "@/components/CardProfileUsers";
 
 async function SearchUsers(name: string) {
   try {
@@ -20,51 +18,48 @@ async function SearchUsers(name: string) {
   }
 }
 
-export default async function SearchPosts({
-  params,
-}: {
-  params: { search: string };
-}) {
+export default async function SearchPosts({ params }: SearchPostsProps) {
   const cookiesStore = cookies();
 
   api.defaults.headers.common.Authorization = `Bearer ${
     cookiesStore.get("@social_network:token_user")?.value
   }`;
 
-  api.defaults.headers.common.user_id = JSON.parse(cookiesStore.get("@social_network:datas_user")?.value as string).id;
+  api.defaults.headers.common.id_user = JSON.parse(
+    cookiesStore.get("@social_network:datas_user")?.value as string
+  ).id;
 
-  const listUsers: ListUsersPaginationProps = await SearchUsers(params.search);
+  const listUsers: ListUsersProps[] = await SearchUsers(params.search);
 
   return (
     <div className="p-5 max-md:pb-24">
-      <Tabs defaultValue="account" className="my-5">
+      <div className="flex flex-wrap justify-center items-center gap-4">
+        {listUsers?.length === 0 && (
+          <h1 className="text-2xl mt-8">Nehuma pessoa encontrada</h1>
+        )}
+        {listUsers?.length > 0 &&
+          listUsers.map((value) => (
+            <CardProfileUsers
+              key={value.id}
+              id={value.id}
+              name={value.name}
+              username={value.username}
+              description={value.description ?? ""}
+              followers={value.followerCount}
+              following={value.followingCount}
+              gender={value.gender}
+              url_img={value.photo_profile}
+              isFollowing={value.isFollowing}
+            />
+          ))}
+      </div>
+      {/* <Tabs defaultValue="account" className="my-5">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="account">Contas</TabsTrigger>
           <TabsTrigger value="tags">Tags</TabsTrigger>
         </TabsList>
         <TabsContent value="account">
-          <div className="flex flex-wrap gap-4 justify-center">
-            {listUsers?.items.length === 0 && (
-              <h1 className="text-2xl mt-8">Nehuma pessoa encontrada</h1>
-            )}
-
-            {listUsers?.items?.length > 0 && listUsers?.items?.map((value) => {
-              return (
-                <CardProfileUsers
-                  key={value.id}
-                  id={value.id}
-                  name={value.name}
-                  username={value.username}
-                  description={value.description ?? ""}
-                  followers={value.followerCount}
-                  following={value.followingCount}
-                  gender={value.gender}
-                  url_img={value.photo_profile}
-                  isFollowing={value.isFollowing}
-                />
-              );
-            })}
-          </div>
+        
         </TabsContent>
         <TabsContent value="tags">
           <div className="flex flex-wrap gap-4 justify-center">
@@ -93,7 +88,7 @@ export default async function SearchPosts({
             </div>
           </div>
         </TabsContent>
-      </Tabs>
+      </Tabs> */}
     </div>
   );
 }

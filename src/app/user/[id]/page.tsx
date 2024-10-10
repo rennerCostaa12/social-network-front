@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { CardProfile } from "@/components/CardProfile";
 import { Post } from "@/components/Post";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { UsersServices } from "@/services/users";
 
 import { api } from "@/config/api";
 
@@ -12,9 +13,9 @@ import { PostsByUserProps, PostsSavesPaginationProps } from "./types";
 
 const getInformationsFollowsUser = async (idUser: string) => {
   try {
-    const response = await api.get(`users-followers/find-by-user/${idUser}`);
+    const response = await UsersServices.getFollowsUser(idUser);
 
-    if (response.status) {
+    if (response?.status) {
       return response.data;
     }
   } catch (error) {
@@ -92,7 +93,7 @@ export default async function UserDetails({
   const postsUsers: PostsByUserProps = await getPostsByUser(params.id);
 
   const dataUser: UserProps = await getDataUser(params.id);
-  
+
   const postsSaves: PostsSavesPaginationProps = await getPostsSaves();
 
   return (
@@ -152,7 +153,7 @@ export default async function UserDetails({
               )}
             </TabsContent>
             <TabsContent value="posts-saved">
-            {postsSaves.items?.length > 0 && (
+              {postsSaves.items?.length > 0 && (
                 <>
                   <div className="my-5 flex flex-wrap justify-center gap-6">
                     {postsSaves?.items?.map((response) => {
