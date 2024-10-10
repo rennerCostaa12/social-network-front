@@ -1,5 +1,6 @@
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import { useRecorderMic } from "@/hooks/useRecorderMic";
 import { ServicesGeneral } from "@/services/index";
@@ -17,6 +18,8 @@ export const useButtonCommentsFeed = ({ idPost, setCountComments }: any) => {
     resetAll,
     stopRecording,
   } = useRecorderMic();
+
+  const router = useRouter();
 
   const { datasUser } = useAuthContext();
 
@@ -49,6 +52,7 @@ export const useButtonCommentsFeed = ({ idPost, setCountComments }: any) => {
       setVisibleModalComments(false);
       resetAll();
       setCountComments((currentValue: number) => currentValue + 1);
+      router.refresh();
     } else {
       toast.error("Error", {
         description: responseCommentAdd?.message,

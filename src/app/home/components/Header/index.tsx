@@ -61,7 +61,6 @@ export const Header = () => {
         className={`${
           isSearching ? "max-sm:hidden" : ""
         } flex items-center gap-2`}
-        prefetch={false}
       >
         <Image
           src="/logo-704apps.png"

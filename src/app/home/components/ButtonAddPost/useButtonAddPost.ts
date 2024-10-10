@@ -92,9 +92,10 @@ export const useButtonAddPost = () => {
     setLoading(false);
 
     if (responsePost?.status) {
-      toast.success("Sucesso", {
-        description: responsePost?.message,
-      });
+      // toast.success("Sucesso", {
+      //   description: responsePost?.message,
+      // });
+      window.location.reload();
 
       handleCloseModalAndReset();
     } else {

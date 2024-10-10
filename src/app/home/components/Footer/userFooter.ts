@@ -1,10 +1,10 @@
 import { useRouter } from "next/navigation";
 
 export const useFooter = () => {
-  const { push } = useRouter();
+  const router = useRouter();
 
   const handleRedirect = (nameRoute: string) => {
-    push(nameRoute);
+    router.push(nameRoute);
   };
 
   return {

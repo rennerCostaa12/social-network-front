@@ -1,9 +1,12 @@
 import { toast } from "sonner";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ServicesGeneral } from "@/services/index";
 
-export const useButtonDeletePost = () => {
+export const useButtonDeletePost = (reloadPage: boolean) => {
   const [loading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const handleConfirm = async (idPost: string) => {
     setLoading(false);
@@ -11,10 +14,15 @@ export const useButtonDeletePost = () => {
     setLoading(true);
 
     if (responseDeletePost?.status) {
+      if (reloadPage) {
+        window.location.reload();
+        return;
+      }
+
       toast.success("Sucesso", {
         description: responseDeletePost?.message,
       });
-      window.location.reload();
+      router.refresh();
     } else {
       toast.error("Error", {
         description: responseDeletePost?.message,

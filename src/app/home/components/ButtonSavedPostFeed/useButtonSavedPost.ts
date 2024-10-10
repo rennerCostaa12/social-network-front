@@ -1,8 +1,12 @@
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 import { SavePostServices } from "@/services/save-posts";
 
 export const useButtonSavedPost = ({ setIsSavedPost }: any) => {
+
+  const router = useRouter();
+
   const handleSavePost = async (idPost: string) => {
     const responseSavePost = await SavePostServices.savePost(idPost);
 
@@ -11,7 +15,7 @@ export const useButtonSavedPost = ({ setIsSavedPost }: any) => {
         description: responseSavePost.message,
       });
       setIsSavedPost(true);
-
+      router.refresh();
     } else {
       toast.error("Error", {
         description: responseSavePost?.message,
@@ -26,9 +30,8 @@ export const useButtonSavedPost = ({ setIsSavedPost }: any) => {
       toast.success("Sucesso", {
         description: responseRemovePost.message,
       });
-
       setIsSavedPost(false);
-
+      router.refresh();
     } else {
       toast.error("Error", {
         description: responseRemovePost?.message,

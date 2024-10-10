@@ -1,5 +1,6 @@
 import { toast } from "sonner";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { useAuthContext } from "@/context/auth";
 
@@ -9,6 +10,8 @@ export const useListComments = ({ setVisibleModalComments, setCountComments }: a
   const [loading, setLoading] = useState<boolean>(false);
 
   const { datasUser } = useAuthContext();
+
+  const router = useRouter();
 
   const handleDeleteComment = async (idComment: string) => {
     setLoading(true);
@@ -22,6 +25,7 @@ export const useListComments = ({ setVisibleModalComments, setCountComments }: a
 
       setCountComments((currentValue: number) => currentValue - 1);
       setVisibleModalComments(false);
+      router.refresh();
     } else {
       toast.error("Error", {
         description: responseDelete?.message,

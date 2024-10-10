@@ -12,8 +12,8 @@ import { useButtonDeletePost } from "./useButtonDeletePost";
 
 import { ButtonDeletePostProps } from "./types";
 
-export const ButtonDeletePost = ({ idPost }: ButtonDeletePostProps) => {
-  const { handleConfirm, loading } = useButtonDeletePost();
+export const ButtonDeletePost = ({ idPost, reload = false }: ButtonDeletePostProps) => {
+  const { handleConfirm, loading } = useButtonDeletePost(reload);
 
   return (
     <AlertDialog

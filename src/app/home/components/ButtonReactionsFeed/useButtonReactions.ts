@@ -1,5 +1,6 @@
 import { toast } from "sonner";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { useAuthContext } from "@/context/auth";
 import { ReactionsPostsServices } from "@/services/reactions-posts";
@@ -9,6 +10,8 @@ export const useButtonReactions = ({
   setCountReactions,
 }: any) => {
   const { datasUser } = useAuthContext();
+
+  const router = useRouter();
 
   const [visibleModalReactions, setVisibleModalReactions] =
     useState<boolean>(false);
@@ -28,6 +31,8 @@ export const useButtonReactions = ({
       setIsReacted(true);
       setCountReactions((currentValue: number) => currentValue + 1);
       setVisibleModalReactions(false);
+
+      router.refresh();
     } else {
       toast.error("Error", {
         description: responseRegister?.message,
@@ -44,6 +49,8 @@ export const useButtonReactions = ({
       setIsReacted(false);
       setCountReactions((currentValue: number) => currentValue - 1);
       setVisibleModalReactions(false);
+
+      router.refresh();
     } else {
       toast.error("Error", {
         description: responseUnregister?.message,

@@ -10,6 +10,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ButtonDeletePost } from "@/components/ButtonDeletePost";
+import { Button } from "@/components/ui/button";
 
 import { ClockIcon, EllipsisVertical } from "lucide-react";
 
@@ -19,8 +21,8 @@ import { ButtonCommentsFeed } from "../ButtonCommentsFeed";
 import { ButtonSavedPostFeed } from "../ButtonSavedPostFeed";
 
 import { usePostFeed } from "./usePostFeed";
-import { ButtonDeletePost } from "@/components/ButtonDeletePost";
-import { Button } from "@/components/ui/button";
+
+import { getNameInitials } from "@/utils/getNamesInitials";
 
 export const PostFeed = ({ data }: PostFeedProps) => {
   const {
@@ -48,11 +50,13 @@ export const PostFeed = ({ data }: PostFeedProps) => {
                   : "/img-default-profile-man.png"
               }
             />
-            <AvatarFallback>RC</AvatarFallback>
+            <AvatarFallback>
+              {getNameInitials(data?.user?.name as string)}
+            </AvatarFallback>
           </Avatar>
           <div>
             <h3 className="text-sm font-bold">{data.user.name}</h3>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground text-center">
               @{data.user.username}
             </p>
           </div>
@@ -73,7 +77,7 @@ export const PostFeed = ({ data }: PostFeedProps) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {/* <ButtonEditPost data={data} /> */}
-                <ButtonDeletePost idPost={data?.id as string} />
+                <ButtonDeletePost idPost={data?.id as string} reload={true} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
