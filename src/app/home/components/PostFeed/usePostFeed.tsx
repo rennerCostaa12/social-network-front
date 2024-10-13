@@ -22,7 +22,7 @@ export const usePostFeed = (data: PostsUserProps) => {
   const { datasUser } = useAuthContext();
 
   const extensionPicture = useMemo(() => {
-    return data?.picture.split(".").pop();
+    return data?.picture?.split(".").pop();
   }, [data]);
 
   const isVideo = useMemo(() => {

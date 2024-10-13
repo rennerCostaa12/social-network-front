@@ -22,7 +22,6 @@ export const useCardSuggestionUsers = () => {
     try {
       const response = await UsersServices.getUsersRecommended(String(page));
       if (response?.status) {
-        console.log(response.data);
         setUsersRecommended((prev) => [...prev, ...response.data.items]);
         setTotalPages(response.data.meta.totalPages);
       }

@@ -55,9 +55,9 @@ export const PostFeed = ({ data }: PostFeedProps) => {
             </AvatarFallback>
           </Avatar>
           <div>
-            <h3 className="text-sm font-bold">{data.user.name}</h3>
+            <h3 className="text-sm font-bold">{data?.user?.name}</h3>
             <p className="text-xs text-muted-foreground text-center">
-              @{data.user.username}
+              @{data?.user?.username}
             </p>
           </div>
           <audio

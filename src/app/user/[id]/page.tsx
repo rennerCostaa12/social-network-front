@@ -97,7 +97,7 @@ export default async function UserDetails({
   const postsSaves: PostsSavesPaginationProps = await getPostsSaves();
 
   return (
-    <div className="p-5 max-md:pb-24">
+    <div className="py-4 max-md:pb-24">
       <div className="flex justify-center">
         <CardProfile
           dataUser={dataUser}
@@ -145,7 +145,7 @@ export default async function UserDetails({
                 <div className="flex flex-col gap-4 my-10 justify-center items-center">
                   <Camera className="w-14 h-14" />
                   <h1 className="text-2xl font-bold">Compartilhe Fotos</h1>
-                  <p className="font-medium">
+                  <p className="font-medium text-center">
                     Quando você compartilha suas fotos elas aparecerão aqui no
                     seu perfil
                   </p>

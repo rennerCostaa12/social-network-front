@@ -80,31 +80,31 @@ export async function middleware(request: NextRequest) {
       return response;
     }
 
-    if (request.nextUrl.pathname.includes("home")) {
-      const user: DatasUserProps | undefined = JSON.parse(
-        dataUser?.value as string
-      );
+    // if (request.nextUrl.pathname.includes("home")) {
+    //   const user: DatasUserProps | undefined = JSON.parse(
+    //     dataUser?.value as string
+    //   );
 
-      const responseFollowsUser = await getFollowsUser(user?.id as string);
+    //   const responseFollowsUser = await getFollowsUser(user?.id as string);
 
-      if (responseFollowsUser?.data.following < 5) {
-        return NextResponse.redirect(
-          new URL("/sugestoes-de-usuarios", request.url)
-        );
-      }
-    }
+    //   if (responseFollowsUser?.data.following < 5) {
+    //     return NextResponse.redirect(
+    //       new URL("/sugestoes-de-usuarios", request.url)
+    //     );
+    //   }
+    // }
 
-    if (request.nextUrl.pathname.includes("sugestoes-de-usuarios")) {
-      const user: DatasUserProps | undefined = JSON.parse(
-        dataUser?.value as string
-      );
+    // if (request.nextUrl.pathname.includes("sugestoes-de-usuarios")) {
+    //   const user: DatasUserProps | undefined = JSON.parse(
+    //     dataUser?.value as string
+    //   );
 
-      const responseFollowsUser = await getFollowsUser(user?.id as string);
+    //   const responseFollowsUser = await getFollowsUser(user?.id as string);
 
-      if (responseFollowsUser?.data.following >= 5) {
-        return NextResponse.redirect(new URL("/home", request.url));
-      }
-    }
+    //   if (responseFollowsUser?.data.following >= 5) {
+    //     return NextResponse.redirect(new URL("/home", request.url));
+    //   }
+    // }
 
     if (
       request.nextUrl.pathname.includes("home") &&

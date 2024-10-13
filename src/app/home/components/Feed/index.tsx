@@ -10,11 +10,11 @@ import { useFeed } from "./useFeed";
 import { PostFeed } from "../PostFeed";
 
 export const Feed = () => {
-  const { dataPosts, loading } = useFeed();
+  const { dataPosts, loading, totalPage, pageFeed, handlePaginate } = useFeed();
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="max-w-[1000px] space-y-4">
+      <div className="w-full max-w-[1000px] space-y-4">
         {!loading && (
           <>
             <div className="flex items-center justify-between">
@@ -29,9 +29,15 @@ export const Feed = () => {
               />
             </div>
 
-            {dataPosts && dataPosts.data.length > 0 && (
+            {dataPosts && dataPosts.length === 0 && (
+              <div>
+                <h1 className="text-xl text-center">Nenhum Post Encontrado</h1>
+              </div>
+            )}
+
+            {dataPosts && dataPosts.length > 0 && (
               <div className="flex flex-col justify-center gap-4">
-                {dataPosts.data.map((response) => {
+                {dataPosts.map((response) => {
                   return <PostFeed data={response} />;
                 })}
               </div>
@@ -39,6 +45,12 @@ export const Feed = () => {
           </>
         )}
       </div>
+
+      {pageFeed < (totalPage as number) && (
+        <div className="my-4">
+          <Button onClick={handlePaginate}>Carregar Mais</Button>
+        </div>
+      )}
     </div>
   );
 };

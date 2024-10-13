@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 
 import { useAuthContext } from "@/context/auth";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { getNameInitials } from "@/utils/getNamesInitials";
 
@@ -18,13 +18,30 @@ export const useHeader = () => {
   };
 
   const handleSearch = (valueInput: string) => {
-    router.push(`/pesquisa/${valueInput}?page=1`);
+    if (valueInput.length > 0) router.push(`/pesquisa/${valueInput}?page=1`);
   };
 
   const handleLogout = () => {
     signOut();
     window.location.href = "/login";
   };
+
+  useEffect(() => {
+    if (isSearching) {
+      refInputSearch.current?.focus();
+      refInputSearch.current?.addEventListener("keydown", function (event) {
+        if (event.code === "Enter") {
+          const elementInput = event.target as HTMLInputElement;
+
+          handleSearch(elementInput.value);
+        }
+      });
+    }
+
+    refInputSearch.current?.addEventListener("blur", () => {
+      setIsSearching(false);
+    });
+  }, [isSearching]);
 
   return {
     handleRedirectMyProfile,
@@ -34,5 +51,6 @@ export const useHeader = () => {
     refInputSearch,
     handleLogout,
     getNameInitials,
+    datasUser,
   };
 };

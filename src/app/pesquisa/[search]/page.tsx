@@ -32,7 +32,7 @@ export default async function SearchPosts({ params }: SearchPostsProps) {
   const listUsers: ListUsersProps[] = await SearchUsers(params.search);
 
   return (
-    <div className="p-5 max-md:pb-24">
+    <div className="py-4 max-md:pb-24">
       <div className="flex flex-wrap justify-center items-center gap-4">
         {listUsers?.length === 0 && (
           <h1 className="text-2xl mt-8">Nehuma pessoa encontrada</h1>
