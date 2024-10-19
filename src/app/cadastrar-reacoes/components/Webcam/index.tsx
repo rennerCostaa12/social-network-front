@@ -13,7 +13,7 @@ export const WebcamCapture = ({
   imageCaptured,
   setImageCaptured,
   onNoAcceptPhoto,
-  loading
+  loading,
 }: WebcamProps) => {
   const webcamRef = useRef<any>(null);
 
@@ -27,7 +27,7 @@ export const WebcamCapture = ({
       <div className="relative">
         {imageCaptured ? (
           <Image
-            className="rounded-full"
+            className="rounded-full w-[250px] h-[250px]"
             src={imageCaptured}
             alt="img"
             quality={100}
@@ -36,7 +36,7 @@ export const WebcamCapture = ({
           />
         ) : (
           <Webcam
-            className="rounded-full"
+            className="rounded-full max-sm:w-[250px] max-sm:h-[250px]"
             ref={webcamRef}
             audio={false}
             width={400}

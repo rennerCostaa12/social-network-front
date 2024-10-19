@@ -77,14 +77,14 @@ export const ListComments = ({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <Button
+                        {/* <Button
                           title="Editar"
                           className="w-full cursor-pointer"
                           variant="ghost"
                         >
                           <FilePenIcon className="w-4 h-4 mr-2" />
                           Editar
-                        </Button>
+                        </Button> */}
                         <AlertDialog
                           button={
                             <Button

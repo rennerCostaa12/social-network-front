@@ -18,7 +18,7 @@ export const useHeader = () => {
   };
 
   const handleSearch = (valueInput: string) => {
-    if (valueInput.length > 0) router.push(`/pesquisa/${valueInput}?page=1`);
+    if (valueInput.length > 0) router.push(`/pesquisa/${valueInput}`);
   };
 
   const handleLogout = () => {

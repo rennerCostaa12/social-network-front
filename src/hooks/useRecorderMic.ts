@@ -30,6 +30,7 @@ export const useRecorderMic = () => {
 
   const stopRecording = () => {
     mediaRecorderRef.current.stop();
+    audioChunksRef.current = [];
     setRecording(false);
   };
 

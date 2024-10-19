@@ -28,6 +28,7 @@ import { PostProps } from "./types";
 
 export const Post = ({ data }: PostProps) => {
   const { datasUser, isVideo } = usePost(data);
+
   return (
     <Card className="max-w-[900px] relative self-center">
       <CardHeader className="flex items-center gap-4">

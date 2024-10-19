@@ -42,6 +42,7 @@ export const TakePhotoEmoticon = ({ data }: TakePhotoEmoticonProps) => {
         <>
           <div>
             <Image
+              className="max-sm:w-[100px] max-sm:h-[100px]"
               src={data[indexImg].image}
               width={180}
               height={180}

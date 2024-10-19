@@ -24,6 +24,28 @@ export const UsersServices = {
       }
     }
   },
+  searchUsersPagination: async (nameUser: string, page:number = 1) => {
+    try {
+      const responseUsers = await api.get(`users/find-user-pagination/${nameUser}?page=${page}`);
+
+      if (responseUsers.status) {
+        return {
+          status: true,
+          message: "Dados de usuários capturados com sucesso",
+          statusCode: 200,
+          data: responseUsers.data,
+        };
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return {
+          status: false,
+          message: error.response.data.message,
+          statusCode: error.response.status,
+        };
+      }
+    }
+  },
   getNewUsers: async () => {
     try {
       const responseNewUsers = await api.get("users/find-new-users");

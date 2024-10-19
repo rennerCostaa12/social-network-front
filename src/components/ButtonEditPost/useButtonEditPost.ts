@@ -29,7 +29,11 @@ export const useButtonEditPost = () => {
   const { datasUser } = useAuthContext();
   const router = useRouter();
 
-  const handleEditPost = async (idPost: string, picture: string, audioPost: string) => {
+  const handleEditPost = async (
+    idPost: string,
+    picture: string,
+    audioPost: string
+  ) => {
     try {
       setLoading(true);
       const responseEditPost = await ServicesGeneral.editPost(
@@ -41,13 +45,13 @@ export const useButtonEditPost = () => {
       setLoading(false);
 
       if (responseEditPost?.status) {
-        toast.success("Sucesso", {
-          description: responseEditPost?.message,
-        });
-
+        // toast.success("Sucesso", {
+        //   description: responseEditPost?.message,
+        // });
         resetAll();
         setIsOpenModal(false);
         router.refresh();
+        window.location.reload();
       } else {
         toast.error("Error", {
           description: responseEditPost?.message,
@@ -79,6 +83,6 @@ export const useButtonEditPost = () => {
     fileVideo,
     setShowCamera,
     showCamera,
-    audioFile
+    audioFile,
   };
 };

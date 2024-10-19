@@ -7,9 +7,16 @@ import { useState } from "react";
 
 import { useAuthContext } from "@/context/auth";
 
-export const useCardProfileUsers = (idUser: string) => {
+export const useCardProfileUsers = (
+  idUser: string,
+  isFollowing: boolean,
+  followers: number
+) => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [isFollowingUser, setIsFollowingUser] = useState<boolean>(isFollowing);
+  const [quantityFollower, setQuantitityFollower] = useState<number>(followers);
 
   const { datasUser } = useAuthContext();
 
@@ -35,6 +42,8 @@ export const useCardProfileUsers = (idUser: string) => {
 
     if (responseFollowing?.status) {
       router.refresh();
+      setIsFollowingUser(!isFollowingUser);
+      setQuantitityFollower((currentValue) => currentValue + 1);
     } else {
       toast.error("Error", {
         description: responseFollowing?.message,
@@ -52,6 +61,8 @@ export const useCardProfileUsers = (idUser: string) => {
 
     if (responseUnfollowing?.status) {
       router.refresh();
+      setIsFollowingUser(!isFollowingUser);
+      setQuantitityFollower((currentValue) => currentValue - 1);
     } else {
       toast.error("Error", {
         description: responseUnfollowing?.message,
@@ -69,6 +80,8 @@ export const useCardProfileUsers = (idUser: string) => {
     handleFollowing,
     handleUnfollowing,
     handleRedirectDetailsPerfil,
-    loading
+    loading,
+    isFollowingUser,
+    quantityFollower,
   };
 };

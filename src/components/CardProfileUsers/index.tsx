@@ -26,7 +26,9 @@ export const CardProfileUsers = ({
     handleUnfollowing,
     handleRedirectDetailsPerfil,
     loading,
-  } = useCardProfileUsers(id);
+    isFollowingUser,
+    quantityFollower
+  } = useCardProfileUsers(id, isFollowing, followers);
 
   return (
     <Card className="w-full max-w-[400px]">
@@ -48,7 +50,7 @@ export const CardProfileUsers = ({
         </div>
         <div className="flex justify-center gap-10 text-center">
           <div>
-            <p className="text-lg font-bold">{followers}</p>
+            <p className="text-lg font-bold">{quantityFollower}</p>
             <p className="text-sm text-muted-foreground">Seguidores</p>
           </div>
           <div>
@@ -58,7 +60,7 @@ export const CardProfileUsers = ({
         </div>
       </CardContent>
       <CardFooter className="flex gap-4">
-        {isFollowing && (
+        {isFollowingUser && (
           <Button
             variant="outline"
             className="w-full"
@@ -70,7 +72,7 @@ export const CardProfileUsers = ({
           </Button>
         )}
 
-        {!isFollowing && (
+        {!isFollowingUser && (
           <Button
             variant="outline"
             className="w-full"
