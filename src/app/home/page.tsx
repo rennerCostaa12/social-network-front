@@ -42,6 +42,12 @@ export default async function Home() {
     cookiesStore.get("@social_network:token_user")?.value
   }`;
 
+  const userLoggedIn = JSON.parse(
+    cookiesStore.get("@social_network:datas_user")?.value as string
+  ).id;
+
+  api.defaults.headers.common.id_user = userLoggedIn;
+
   const responseNewUsers: UserProps[] = await getNewUsers();
 
   // const responseFollowsUser = await getDataFollowsUser(
@@ -56,7 +62,7 @@ export default async function Home() {
         </div>
       </div>
       <div>
-       <Feed />
+        <Feed />
       </div>
     </div>
   );

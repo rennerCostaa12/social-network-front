@@ -3,7 +3,6 @@ import type { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import { DatasUserProps } from "./context/auth/types";
 
-import { UsersServices } from "./services/users";
 import { ServicesGeneral } from "./services/index";
 import { EmoticonsDriverService } from "./services/emoticons-driver";
 import { api } from "./config/api";
@@ -17,7 +16,7 @@ export async function middleware(request: NextRequest) {
 
   const { verifyRegisterEmoticonsByUser } = ServicesGeneral;
   const { getAllEmoticonsDriver } = EmoticonsDriverService;
-  const { getFollowsUser } = UsersServices;
+  // const { getFollowsUser } = UsersServices;
 
   const cookiesStore = cookies();
 

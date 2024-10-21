@@ -63,7 +63,7 @@ export const PostFeed = ({ data }: PostFeedProps) => {
           <audio
             className="w-full"
             controls
-            src={"/audio-default.mp3"}
+            src={data?.comment}
             typeof="audio/mpeg"
           />
         </div>
