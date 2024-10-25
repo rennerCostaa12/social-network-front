@@ -52,7 +52,7 @@ export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
               </Button>
 
               {audioUrl && audioUrl?.length > 0 && datasUser && (
-                <div className="mt-4 flex items-center gap-4">
+                <div className="mt-2 flex items-center gap-4">
                   <div className="flex flex-col items-center">
                     <Avatar>
                       <AvatarImage
@@ -90,12 +90,6 @@ export const ButtonAddPost = ({ buttonElement }: ButtonAddPostProps) => {
                 onChange={handleChooseFile}
               /> */}
             </div>
-
-            {fileVideo && (
-              <div className="flex items-center justify-center">
-               
-              </div>
-            )}
 
             {/* <div className="flex items-center justify-center">
               {isVideo ? (

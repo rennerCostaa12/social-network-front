@@ -26,8 +26,8 @@ export const VideoRecorder = ({ setFileVideo }: VideoRecorderProps) => {
       <div>
         {urlVideo && !capturing && (
           <video
-            width={600}
-            height={400}
+            width={500}
+            height={300}
             controls
             key={urlVideo}
             className="rounded-md"
@@ -42,12 +42,12 @@ export const VideoRecorder = ({ setFileVideo }: VideoRecorderProps) => {
             key={isMute as any}
             ref={webcamRef}
             audio={!isMute}
-            width={600}
-            height={400}
-            mirrored
+            width={500}
+            height={300}
+            mirrored={false}
             videoConstraints={{
-              width: 400,
-              height: 400,
+              width: 500,
+              height: 300,
               facingMode: "user",
             }}
           />

@@ -24,7 +24,7 @@ export const ButtonEditPost = ({ data }: ButtonEditPostProps) => {
     setFileVideo,
     setShowCamera,
     showCamera,
-    audioFile
+    audioFile,
   } = useButtonEditPost();
 
   return (
@@ -62,7 +62,7 @@ export const ButtonEditPost = ({ data }: ButtonEditPostProps) => {
               </Button>
 
               {data?.comment && !audioUrl && (
-                <div className="mt-4 flex items-center gap-4 max-md:flex-col max-md:gap-0">
+                <div className="mt-2 flex items-center gap-4 max-md:flex-col max-md:gap-0">
                   <div className="flex flex-col items-center">
                     <Avatar>
                       <AvatarImage
@@ -91,7 +91,7 @@ export const ButtonEditPost = ({ data }: ButtonEditPostProps) => {
               )}
 
               {audioUrl && audioUrl?.length > 0 && datasUser && (
-                <div className="mt-4 flex items-center gap-4 max-md:flex-col max-md:gap-0">
+                <div className="mt-2 flex items-center gap-4 max-md:flex-col max-md:gap-0">
                   <div className="flex flex-col items-center">
                     <Avatar>
                       <AvatarImage

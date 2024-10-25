@@ -27,7 +27,7 @@ export const ModalDialog = ({
           {title && <DialogTitle>{title}</DialogTitle>}
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
-        <div className="grid gap-4 py-4">{elementContent}</div>
+        <div className="grid gap-4 py-2">{elementContent}</div>
         <DialogFooter>{elementFooter}</DialogFooter>
       </DialogContent>
     </Dialog>
